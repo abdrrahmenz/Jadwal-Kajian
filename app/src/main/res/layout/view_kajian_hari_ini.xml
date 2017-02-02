@@ -1,0 +1,176 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    tools:context="id.or.qodr.jadwalkajianpekalongan.fragment.KajianHariIni">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            card_view:cardUseCompatPadding="@dimen/card_album_radius">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp">
+
+                    <ImageView
+                        android:src="@drawable/msjid"
+                        android:scaleType="centerCrop"
+                        android:layout_centerInParent="true"
+                        android:layout_width="90dp"
+                        android:layout_height="90dp" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/temaHari"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tema : Minhajul Muslim"
+                        android:drawableLeft="@drawable/ic_tema"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:textColor="#433f3f"
+                        android:fontFamily="sans-serif-condensed"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="4dp"
+                        android:textSize="14sp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fff"/>
+                    <TextView
+                        android:id="@+id/pemateriHari"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pemateri : ust Fahmi A."
+                        android:drawableLeft="@drawable/ic_pemateri"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="#433f3f"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="4dp"
+                        android:textSize="14sp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fff"/>
+
+                    <TextView
+                        android:id="@+id/lokasiHari"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Lokasi : Muadz bin Jabal"
+                        android:drawableLeft="@drawable/ic_location"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="#433f3f"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="4dp"
+                        android:textSize="14sp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fff"/>
+                    <TextView
+                        android:id="@+id/cpHari"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="CP : 082100012345"
+                        android:drawableLeft="@drawable/ic_cp"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:fontFamily="sans-serif-condensed"
+                        android:textColor="#433f3f"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="4dp"
+                        android:textSize="14sp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#fff"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="18dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_style">
+                        <TextView
+                            android:id="@+id/sd"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#aaa"
+                            android:textStyle="bold"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="s/d"/>
+                        <TextView
+                            android:id="@+id/mulaiHari"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginBottom="-10dp"
+                            android:textColor="#000"
+                            android:layout_above="@id/sd"
+                            android:textStyle="bold"
+                            android:text="9.30"
+                            android:textSize="30dp" />
+
+
+                        <TextView
+                            android:id="@+id/sampaiHari"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginTop="-12dp"
+                            android:textColor="#000"
+                            android:layout_below="@id/sd"
+                            android:textStyle="bold"
+                            android:text="11.30"
+                            android:textSize="30dp"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</FrameLayout>

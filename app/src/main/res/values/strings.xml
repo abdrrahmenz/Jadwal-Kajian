@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Jadwal Kajian Pekalongan</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="kajianharini">Kajian Hari ini</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="kajianpekanini">Kajian Pekan Ini</string>
+    <string name="login">Login Admin</string>
+    <string name="logout">Logout</string>
+    <string name="about">Info</string>
+    <string name="title_activity_admin">Admin</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="place_details">
+    <![CDATA[
+        <b>%1$s</b>
+        <br/>
+        <i>Place Id: %2$s</i>
+        <br/>
+        Address: %3$s
+        <br/>
+        Phone: %4$s
+        <br/>
+        Website: %5$s
+    ]]>
+</string>
+</resources>
