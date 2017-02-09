@@ -82,9 +82,11 @@
                         android:layout_margin="10dp"/>
                     <Spinner
                         android:id="@+id/spin_stiaphari"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="10dp"/>
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="3dp"
+                        android:background="@drawable/rounded_style"/>
                 </LinearLayout>
 
 
@@ -93,69 +95,84 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="18sp"
                         android:text="Pekan Ke : "
                         android:layout_margin="10sp"
                         android:textColor="#000"/>
                     <LinearLayout
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/openDialog"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanSatu"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="1"/>
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanDua"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="2"/>
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanTiga"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="3"/>
+                        <TextView
+                            android:id="@+id/text"
+                            android:layout_width="180dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/rounded_style"
+                            android:singleLine="true"
+                            android:textColor="#000"
+                            android:layout_marginLeft="0dp"
+                            android:gravity="center"
+                            android:drawablePadding="2dip"
+                            android:textSize="14sp"
+                            android:paddingLeft="14dip"
+                            android:paddingRight="14dip"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:text="Pilih Pekan" />
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanSatu"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="1"/>-->
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanDua"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="2"/>-->
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanTiga"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="3"/>-->
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="vertical">-->
 
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanEmpat"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="4"/>
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanLima"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="5"/>
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/pekanAll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5sp"
-                            android:onClick="onCheckBox"
-                            android:text="Semua"/>
-                    </LinearLayout>
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanEmpat"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="4"/>-->
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanLima"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="5"/>-->
+                        <!--<android.support.v7.widget.AppCompatCheckBox-->
+                            <!--android:id="@+id/pekanAll"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_margin="5sp"-->
+                            <!--android:onClick="onCheckBox"-->
+                            <!--android:text="Semua"/>-->
+                    <!--</LinearLayout>-->
                 </LinearLayout>
 
             </LinearLayout>
@@ -200,13 +217,43 @@
             <TextView
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:text="Waktu : "
+                android:text="Mulai : "
                 android:textSize="18sp"
                 android:layout_marginLeft="10sp"
                 android:textColor="#000"/>
 
             <Button
-                android:id="@+id/time_input"
+                android:id="@+id/time_mulai"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9sp"
+                android:textAllCaps="false"
+                android:background="@drawable/rounded_style"
+                android:drawableLeft="@drawable/ic_time"
+                android:drawablePadding="2dip"
+                android:onClick="onClick"
+                android:paddingLeft="14dip"
+                android:paddingRight="14dip"
+                android:text="Hours-Minutes"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="Sampai : "
+                android:textSize="18sp"
+                android:layout_marginLeft="10sp"
+                android:textColor="#000"/>
+
+            <Button
+                android:id="@+id/time_sampai"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9sp"
@@ -239,6 +286,7 @@
             android:layout_height="40dp"
             android:hint="ust Subhan Lc"
             android:textSize="14sp"
+            android:inputType="textPersonName"
             android:drawablePadding="2dip"
             android:paddingLeft="14dip"
             android:paddingRight="14dip"
@@ -266,6 +314,7 @@
                 android:layout_height="40dp"
                 android:hint="Minhajul Muslim"
                 android:drawablePadding="2dip"
+                android:inputType="textMultiLine"
                 android:textSize="14sp"
                 android:paddingLeft="14dip"
                 android:paddingRight="14dip"
@@ -289,20 +338,43 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="#000"/>
 
-            <Button
+            <Spinner
                 android:id="@+id/lokasi_input"
                 android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10sp"
-                android:textAllCaps="false"
+                android:layout_height="40dp"
                 android:background="@drawable/rounded_style"
-                android:drawableLeft="@drawable/ic_place"
-                android:drawablePadding="2dip"
-                android:onClick="onClick"
-                android:paddingLeft="14dip"
-                android:paddingRight="14dip"
+                android:layout_marginLeft="10sp"
                 android:hint="Pilih Lokasi"
                 android:textColorHint="#000"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:text="No Hp : "
+                android:textSize="18sp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000"/>
+            <EditText
+                android:id="@+id/edt_cp"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                android:hint="+6289633xxx"
+                android:drawablePadding="2dip"
+                android:singleLine="true"
+                android:textSize="14sp"
+                android:inputType="number"
+                android:paddingLeft="14dip"
+                android:paddingRight="14dip"
+                android:background="@drawable/rounded_style"
+                android:layout_marginLeft="10dp"/>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

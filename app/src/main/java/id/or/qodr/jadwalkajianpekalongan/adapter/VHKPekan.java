@@ -2,6 +2,7 @@ package id.or.qodr.jadwalkajianpekalongan.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import id.or.qodr.jadwalkajianpekalongan.R;
@@ -14,10 +15,12 @@ public class VHKPekan extends RecyclerView.ViewHolder {
 
     public TextView tanggal,bulan,mulai, sampai, tema, pemateri, lokasi, cp;
     public View rootViewPekan;
+    public ImageView img;
 
     public VHKPekan(View itemView) {
         super(itemView);
         rootViewPekan = itemView;
+        img = (ImageView) itemView.findViewById(R.id.img);
         tanggal = (TextView) itemView.findViewById(R.id.tanggal);
         bulan = (TextView) itemView.findViewById(R.id.bulan);
         mulai = (TextView) itemView.findViewById(R.id.mulaiPekan);

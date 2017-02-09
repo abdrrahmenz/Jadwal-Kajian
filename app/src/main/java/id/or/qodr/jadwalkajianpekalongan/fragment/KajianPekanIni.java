@@ -14,6 +14,7 @@ import java.util.List;
 
 import id.or.qodr.jadwalkajianpekalongan.R;
 import id.or.qodr.jadwalkajianpekalongan.classes.DataKajian;
+import id.or.qodr.jadwalkajianpekalongan.core.API;
 import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
 
 /**
@@ -24,7 +25,6 @@ public class KajianPekanIni extends Fragment {
     private RecyclerView rvKPekan;
     private DataKajian dataKajian;
     private List<JadwalModel> jadwal;
-    private String URL_LIST_JADWAL_HARI="http://192.168.1.7/api/";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,11 +40,12 @@ public class KajianPekanIni extends Fragment {
         setHasOptionsMenu(true);
 
         dataKajian = new DataKajian(getActivity());
+        API api = new API();
 
         jadwal = new ArrayList<JadwalModel>();
         rvKPekan = (RecyclerView) getActivity().findViewById(R.id.rcvKajPekan);
 
 
-        dataKajian.getJadwalKPekan(rvKPekan, URL_LIST_JADWAL_HARI);
+        dataKajian.getJadwalKPekan(rvKPekan, api.GET_JADWAL);
     }
 }

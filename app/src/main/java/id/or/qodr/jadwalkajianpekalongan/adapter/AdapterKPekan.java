@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import id.or.qodr.jadwalkajianpekalongan.MapsActivity;
 import id.or.qodr.jadwalkajianpekalongan.R;
 import id.or.qodr.jadwalkajianpekalongan.core.Utils;
 import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
+import id.or.qodr.jadwalkajianpekalongan.model.Location;
 
 /**
  * Created by adul on 23/01/17.
@@ -22,11 +24,13 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
 
     private Context context;
     private List<JadwalModel> listJadwal;
+    private List<Location> listLokasi;
     private Utils utils;
 
-    public AdapterKPekan(Context context, List<JadwalModel> listJadwal) {
+    public AdapterKPekan(Context context, List<JadwalModel> listJadwal,List<Location> listLokasi ) {
         this.context = context;
         this.listJadwal = listJadwal;
+        this.listLokasi = listLokasi;
     }
 
     @Override
@@ -52,6 +56,8 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
         String[] sampe = listJadwal.get(position).sampai.split(":");
         holder.sampai.setText(sampe[0]+":"+sampe[1]);
 
+//        holder.img.setImageResource(listLokasi.get(position).getImg());
+        holder.img.setImageResource(R.drawable.alirsyad);
         holder.tema.setText(listJadwal.get(position).tema);
         holder.pemateri.setText(listJadwal.get(position).pemateri);
         holder.lokasi.setText(listJadwal.get(position).lokasi);

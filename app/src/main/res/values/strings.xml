@@ -11,6 +11,14 @@
     <string name="about">Info</string>
     <string name="title_activity_admin">Admin</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="pekan_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>all</item>
+    </string-array>
     <string name="place_details">
     <![CDATA[
         <b>%1$s</b>

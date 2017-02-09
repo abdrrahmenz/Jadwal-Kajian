@@ -1,39 +1,51 @@
 package id.or.qodr.jadwalkajianpekalongan;
 
-import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import id.or.qodr.jadwalkajianpekalongan.classes.DataKajian;
+import id.or.qodr.jadwalkajianpekalongan.core.API;
 import id.or.qodr.jadwalkajianpekalongan.core.Utils;
+import id.or.qodr.jadwalkajianpekalongan.model.Location;
 
-public class AdminInput extends AppCompatActivity implements DatePickerDialog.OnDateSetListener,
-        TimePickerDialog.OnTimeSetListener {
+public class AdminInput extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     @BindView(R.id.rutin)
     RadioButton rutin;
@@ -41,28 +53,24 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
     RadioButton tdkRutin;
     @BindView(R.id.spin_stiaphari)
     Spinner spinStiaphari;
-    @BindView(R.id.pekanSatu)
-    AppCompatCheckBox pekanSatu;
-    @BindView(R.id.pekanDua)
-    AppCompatCheckBox pekanDua;
-    @BindView(R.id.pekanTiga)
-    AppCompatCheckBox pekanTiga;
-    @BindView(R.id.pekanEmpat)
-    AppCompatCheckBox pekanEmpat;
-    @BindView(R.id.pekanLima)
-    AppCompatCheckBox pekanLima;
-    @BindView(R.id.pekanAll)
-    AppCompatCheckBox pekanAll;
+    @BindView(R.id.openDialog)
+    LinearLayout checkboxLayout;
+    @BindView(R.id.text)
+    TextView pekan;
     @BindView(R.id.tgl_input)
     Button tglInput;
-    @BindView(R.id.time_input)
-    Button timeInput;
+    @BindView(R.id.time_mulai)
+    Button timeMulai;
+    @BindView(R.id.time_sampai)
+    Button timeSampai;
     @BindView(R.id.edt_pemateri)
     EditText edtPemateri;
     @BindView(R.id.edt_tema)
     EditText edtTema;
+    @BindView(R.id.edt_cp)
+    EditText edtCp;
     @BindView(R.id.lokasi_input)
-    Button lokasiInput;
+    Spinner lokasiInput;
     @BindView(R.id.btn_cancel)
     Button btnCancel;
     @BindView(R.id.btn_addkajian)
@@ -71,9 +79,15 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
     LinearLayout tglInputLayout;
     @BindView(R.id.opt_rutin)
     LinearLayout opt_rutin;
+    private API api;
     private Utils utils;
     private String KEY_LOKASI = "LOKASI";
     String kordinat = null;
+    private List<Location> locations;
+    private ArrayAdapter<Location> locationArrayAdapter;
+    StringBuilder stringBuilder = new StringBuilder();
+    List<CharSequence> list = new ArrayList<CharSequence>();
+    private DataKajian dataKajian;
 
 
     @Override
@@ -83,46 +97,123 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
         ButterKnife.bind(this);
 
         utils = new Utils(this);
+        api = new API();
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             kordinat = extras.getString(KEY_LOKASI);
         }
-        lokasiInput.setText(kordinat);
-
         opt_rutin.setVisibility(View.GONE);
         tglInputLayout.setVisibility(View.GONE);
 
-        final ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, ID_SETIAP_HARI);
+        locations = new ArrayList<>();
+        locations.add(new Location("Pilih Lokasi",-7.030593, 109.609775, api.GET_IMG+"msjid.jpg"));
+        locations.add(new Location("Masjid Muadz bin Jabal Karanganyar",-7.030593, 109.609775, api.GET_IMG+"msjid.jpg"));
+        locations.add(new Location("Masjid Ibnu Abbas Wiradesa", -6.887971, 109.627553, api.GET_IMG+"ibnuabbas.jpg"));
+        locations.add(new Location("Masjid Imam As-Syafi'i Pekalongan", -6.892440, 109.677294, api.GET_IMG+"imamsyafii.jpg"));
+        locations.add(new Location("Masjid Al-Hidayah Sepait", -6.890784, 109.589407, api.GET_IMG+"alhidayah.jpg"));
+        locations.add(new Location("Masjid Al-Irsyad Pekalongan", -6.884119, 109.682104, api.GET_IMG+"alirsyad.jpg"));
+        locations.add(new Location("Masjid RS.Khodijah Pekalongan",-6.886206, 109.676884,api.GET_IMG+"rsu_khodijah.jpg"));
+        locations.add(new Location("Masjid Nidaus Salam Wiradesa", -6.874382, 109.667076, api.GET_IMG+"nidausalam.jpg"));
+        locations.add(new Location("Mushola As-Salam Comal", -6.890306, 109.660108, api.GET_IMG+"as_salam.jpeg"));
+        locations.add(new Location("Masjid Al-Hikmah Tosaran-Kedungwuni", -6.941677, 109.652681, api.GET_IMG+"alhikmah.jpg"));
+        locations.add(new Location("Masjid Al-Muttaqin Wiradesa", -6.892344, 109.620116,api.GET_IMG+"muttaqin.jpeg"));
+        locations.add(new Location("Mushola Abdul Ghoni Karanganyar", -7.021326, 109.647927,api.GET_IMG+"ghoni.jpg"));
+
+        locationArrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, locations);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lokasiInput.setAdapter(locationArrayAdapter);
+
+
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item,ID_SETIAP_HARI)
+        {
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                return v;
+            }
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView,parent);
+                ((TextView) v).setGravity(Gravity.CENTER);
+                return v;
+            }
+        };
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinStiaphari.setAdapter(categoryAdapter);
-        spinStiaphari.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch ((int) categoryAdapter.getItemId(position)) {
-                    case 0:
-                        Toast.makeText(AdminInput.this, "pilih hari dengan benar", Toast.LENGTH_SHORT).show();
-                    break;
-                    case 1:
-                        Toast.makeText(AdminInput.this, "pilih hari senin", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(AdminInput.this, "pilih hari selasa", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(AdminInput.this, "pilih hari 3", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(AdminInput.this, "pilih hari 4", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 6:
-                        Toast.makeText(AdminInput.this, "pilih hari 5", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-//                Toast.makeText(getApplicationContext(), ""+categoryAdapter.getItemId(position), Toast.LENGTH_SHORT).show();
-            }
 
+        String[] idPekan = {"1","2","3","4","5","Semua"};
+//        for (int i = 1; i < 6; i++) {
+            list.add(""+idPekan[0]);  // Add the item in the list
+            list.add(""+idPekan[1]);
+            list.add(""+idPekan[2]);
+            list.add(""+idPekan[3]);
+            list.add(""+idPekan[4]);
+//            list.add(""+idPekan[5]);
+//        }
+        View openDialog = (View) findViewById(R.id.openDialog);
+        openDialog.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onClick(View v) {
+                // Intialize  readable sequence of char values
+                final CharSequence[] dialogList = list.toArray(new CharSequence[list.size()]);
+                final AlertDialog.Builder builderDialog = new AlertDialog.Builder(AdminInput.this);
+                builderDialog.setTitle("Pilih pekan");
+                int count = dialogList.length;
+                boolean[] is_checked = new boolean[count];
+
+                // Creating multiple selection by using setMutliChoiceItem method
+                builderDialog.setMultiChoiceItems(dialogList, is_checked,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int whichButton, boolean isChecked) {
+
+                            }
+                        });
+                builderDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ListView list = ((AlertDialog) dialog).getListView();
+                        // make selected item in the comma seprated string
+//                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 0; i < list.getCount(); i++) {
+
+                            boolean checked = list.isItemChecked(i);
+
+                            if (checked ) {
+                                if (stringBuilder.length() > 0)
+                                stringBuilder.append(",");
+                                stringBuilder.append(list.getItemAtPosition(i));
+
+                                Toast.makeText(AdminInput.this, ""+list.getItemAtPosition(i), Toast.LENGTH_SHORT).show();
+
+                            }
+
+
+                        }
+                        Toast.makeText(AdminInput.this, ""+stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                        /*Check string builder is empty or not. If string builder is not empty.
+                          It will display on the screen.
+                         */
+                        if (stringBuilder.toString().trim().equals("")) {
+
+                            ((TextView) findViewById(R.id.text)).setText("Pilih Pekan");
+                            stringBuilder.setLength(0);
+
+                        } else {
+
+                            ((TextView) findViewById(R.id.text)).setText(stringBuilder);
+                        }
+                    }
+                });
+                builderDialog.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ((TextView) findViewById(R.id.text)).setText("Pilih Pekan");
+                            }
+                        });
+                AlertDialog alert = builderDialog.create();
+                alert.show();
 
             }
         });
@@ -130,166 +221,76 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
-    @OnClick({R.id.pekanSatu, R.id.pekanDua, R.id.pekanTiga, R.id.pekanEmpat, R.id.pekanLima, R.id.pekanAll})
-    public void onCheckBox(View view) {
-        switch (view.getId()) {
-            case R.id.pekanSatu:
-                if (pekanSatu.isClickable()){
-                    pekanAll.setChecked(false);
-//                    Calendar cal = Calendar.getInstance();
-//                    cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
-//
-//                    Date lastDayOfMonth = cal.getTime();
-                    String date="dd/MM/yyyy";
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Calendar c = Calendar.getInstance();
-                    try {
-                        c.setTime(sdf.parse(date));
-                    } catch (ParseException ex) {
-//                        Logger.getLogger(DateIterator.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    int maxDay = c.getActualMaximum(Calendar.DAY_OF_MONTH);
-                    for (int co = 0; co < maxDay; co++) {
-                        System.out.println(sdf.format(c.getTime()));
-                        c.add(Calendar.DATE, 7);
-                    }
-                    Toast.makeText(this, ""+maxDay, Toast.LENGTH_SHORT).show();
+    private void imgMasjid() {
 
-                }
-                break;
-            case R.id.pekanDua:
-                if (pekanDua.isClickable()){
-                    pekanAll.setChecked(false);
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    Calendar cal = Calendar.getInstance();
-                    System.out.println("time => " + dateFormat.format(cal.getTime()));
-
-                    String time_str = dateFormat.format(cal.getTime());
-                    Date date = null;
-                    cal.add(Calendar.DATE, 7);
-                    Date end = cal.getTime();
-                    System.out.println("end Date > "+end);
-
-                    String[] s = time_str.split(" ");
-
-                    for (int i = 0; i < s.length; i++) {
-                        System.out.println("date  => " + s[i]);
-                    }
-
-                    int year_sys = Integer.parseInt(s[0].split("/")[0]);
-                    int month_sys = Integer.parseInt(s[0].split("/")[1]);
-                    int day_sys = Integer.parseInt(s[0].split("/")[2]);
-
-                    int hour_sys = Integer.parseInt(s[1].split(":")[0]);
-                    int min_sys = Integer.parseInt(s[1].split(":")[1]);
-
-                    System.out.println("year_sys  => " + year_sys);
-                    System.out.println("month_sys  => " + month_sys);
-                    System.out.println("day_sys  => " + day_sys);
-
-                    System.out.println("hour_sys  => " + hour_sys);
-                    System.out.println("min_sys  => " + min_sys);
-                    Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
-
-                }
-                break;
-            case R.id.pekanTiga:
-                if (pekanTiga.isClickable()){
-                    pekanAll.setChecked(false);
-                    DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
-                    Date dt = new Date();
-                    try {
-                        dt = df.parse("31/01/2017");
-                    } catch (ParseException e) {
-                        System.out.println("Error");
-                    }
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(dt);
-                    cal.set(Calendar.DAY_OF_WEEK_IN_MONTH, cal.getFirstDayOfWeek());
-                    Date startDate = cal.getTime();
-                    cal.add(Calendar.DATE, 7);
-                    Date endDate = cal.getTime();
-//                    Toast.makeText(this, ""+startDate+" lnjute "+endDate, Toast.LENGTH_LONG).show();
-                    Toast.makeText(this, ""+df.format(dt), Toast.LENGTH_LONG).show();
-                }
-                break;
-            case R.id.pekanEmpat:
-                if (pekanEmpat.isClickable()){
-                    pekanAll.setChecked(false);
-//                    Calendar calendar = Calendar.getInstance();
-//                    calendar.set(Calendar.DAY_OF_WEEK, Calendar.FEBRUARY);
-//                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//                    String outputDate = simpleDateFormat.format(calendar.getTime());
-//                    Toast.makeText(this, ""+outputDate, Toast.LENGTH_SHORT).show();
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
-                    cal.clear(Calendar.MINUTE);
-                    cal.clear(Calendar.SECOND);
-                    cal.clear(Calendar.MILLISECOND);
-
-// get start of the month
-                    cal.set(Calendar.DAY_OF_MONTH, 1);
-                    System.out.println("Start of the month:       " + cal.getTime());
-                    System.out.println("... in milliseconds:      " + cal.getTimeInMillis());
-
-// get start of the next month
-                    cal.add(Calendar.MONTH, 1);
-                    System.out.println("Start of the next month:  " + cal.getTime());
-                }
-                break;
-            case R.id.pekanLima:
-                if (pekanLima.isClickable()){
-                    pekanAll.setChecked(false);
-                    Calendar now = Calendar.getInstance();
-
-                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-
-                    String[] days = new String[7];
-                    int delta = now.get(GregorianCalendar.WEEK_OF_MONTH); //add 2 if your week start on monday
-                    now.add(Calendar.DAY_OF_MONTH, delta );
-                    for (int i = 0; i < now.getActualMaximum(Calendar.DATE); i++)
-                    {
-                        days[i] = format.format(now.getTime());
-                        now.add(Calendar.DAY_OF_MONTH, 7);
-                    }
-                    System.out.println(Arrays.toString(days));
-
-                }
-                break;
-            case R.id.pekanAll:
-                if (pekanAll.isChecked()) {
-                    pekanSatu.setChecked(true);
-                    pekanDua.setChecked(true);
-                    pekanTiga.setChecked(true);
-                    pekanEmpat.setChecked(true);
-                    pekanLima.setChecked(true);
-                }else {
-                    pekanSatu.setChecked(false);
-                    pekanDua.setChecked(false);
-                    pekanTiga.setChecked(false);
-                    pekanEmpat.setChecked(false);
-                    pekanLima.setChecked(false);
-                }
-                break;
-        }
     }
 
+    public int getDayID(int date){
+        int week=0;
+        if(date<=7){
+            week=1;
+        }else if(date>=8 && date<=14){
+            week=8;
+        }else if(date>=15 && date<=21){
+            week=15;
+        }else if(date>=22 && date<=28){
+            week=22;
+        }else if(date>=29){
+            week=29;
+        }
+        return week;
+    }
+/*
+* input data
+* hari : Senin
+* pekan ke 1
+* */
+    public String checkPekan(int date, int a){
+        int year = 2017;
+        int month = 2;
+        int dayOfM = a;
+        Calendar myCalendar = new GregorianCalendar(year, month, dayOfM);
+        String week=null;
+        if(date<=7){
 
-    @OnClick({R.id.rutin, R.id.tdkRutin, R.id.tgl_input, R.id.time_input, R.id.lokasi_input, R.id.btn_cancel, R.id.btn_addkajian})
+                final int dayOfWeek = myCalendar.get(Calendar.DAY_OF_WEEK);
+                if(spinStiaphari.getSelectedItem().toString().equals(utils.showDayByID(dayOfWeek))){
+                    week=spinStiaphari.getSelectedItem().toString()+" = "+utils.showDayByID(dayOfWeek);
+                }else{
+                    week=String.valueOf(a);
+                }
+        }else if(date>=8 && date<=14){
+
+            final int dayOfWeek = myCalendar.get(Calendar.DAY_OF_WEEK);
+            if(spinStiaphari.getSelectedItem().toString().equals(utils.showDayByID(dayOfWeek))){
+                week=spinStiaphari.getSelectedItem().toString()+" = "+utils.showDayByID(dayOfWeek);
+            }
+
+        }else if(date>=15 && date<=21){
+            week="minggu 3 ";
+        }else if(date>=22 && date<=28){
+            week="minggu 4 ";
+        }else if(date>=29){
+            week="minggu 5 ";
+        }
+        return week;
+    }
+    @OnClick({R.id.rutin, R.id.tdkRutin, R.id.tgl_input, R.id.time_mulai, R.id.time_sampai, R.id.btn_cancel, R.id.btn_addkajian})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rutin:
                 Toast.makeText(this, "rutin", Toast.LENGTH_SHORT).show();
-                if (rutin.isClickable())
+                if (rutin.isChecked())
                     rutin.setBackgroundResource(R.drawable.clickable_style);
                 rutin.setTextColor(getResources().getColor(R.color.white));
                 tdkRutin.setBackgroundResource(R.drawable.rounded_style);
                 tdkRutin.setTextColor(getResources().getColor(R.color.mdtp_numbers_text_color));
                 checkJenisRutin();
+
                 break;
             case R.id.tdkRutin:
                 Toast.makeText(this, "tdk rutin", Toast.LENGTH_SHORT).show();
-                if (tdkRutin.isClickable())
+                if (tdkRutin.isChecked())
                     tdkRutin.setBackgroundResource(R.drawable.clickable_style);
                 tdkRutin.setTextColor(getResources().getColor(R.color.white));
                 rutin.setBackgroundResource(R.drawable.rounded_style);
@@ -308,45 +309,131 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
                 dpd.setVersion(DatePickerDialog.Version.VERSION_2);
                 dpd.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.time_input:
-                Toast.makeText(this, "time", Toast.LENGTH_SHORT).show();
+            case R.id.time_mulai:
+                Toast.makeText(this, "time_mulai", Toast.LENGTH_SHORT).show();
                 Calendar nowTime = Calendar.getInstance();
                 TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        AdminInput.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                                String time = hourOfDay + ":" + minute + ":"+"00";
+                                timeMulai.setText(time);
+                            }
+                        },
                         nowTime.get(Calendar.HOUR_OF_DAY),
                         nowTime.get(Calendar.MINUTE),
                         true
                 );
                 tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+                tpd.setAccentColor(getResources().getColor(R.color.colorPrimary));
                 tpd.show(getFragmentManager(), "Datepickerdialog");
                 break;
-            case R.id.lokasi_input:
-                Toast.makeText(this, "lokasi", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(AdminInput.this, MapsActivity.class));
-                finish();
+            case R.id.time_sampai:
+                Toast.makeText(this, "time_sampai", Toast.LENGTH_SHORT).show();
+                Calendar nowTimes = Calendar.getInstance();
+                TimePickerDialog ttpd = TimePickerDialog.newInstance(
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
 
+                                String time2 = hourOfDay + ":" + minute +":"+"00";
+
+                                timeSampai.setText(time2);
+                            }
+                        },
+                        nowTimes.get(Calendar.HOUR_OF_DAY),
+                        nowTimes.get(Calendar.MINUTE),
+                        true
+                );
+                ttpd.setVersion(TimePickerDialog.Version.VERSION_2);
+                ttpd.setAccentColor(getResources().getColor(R.color.colorPrimary));
+                ttpd.show(getFragmentManager(), "Datepickerdialog");
                 break;
             case R.id.btn_cancel:
                 Toast.makeText(this, "cancel", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(AdminInput.this, AdminActivity.class));
+
                 break;
             case R.id.btn_addkajian:
-                DateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date date = new Date();
-
+                String url = api.POST_JADWAL; RecyclerView recylerVw = null;
                 HashMap<String, String> params = new HashMap<String, String>();
-                params.put("hari", spinStiaphari.getSelectedItem().toString());
-                params.put("pekan", pekanSatu.getText().toString());
-                params.put("waktu", timeInput.getText().toString());
-                params.put("pemateri", edtPemateri.getText().toString());
-                params.put("tema", edtTema.getText().toString());
-                params.put("lokasi", lokasiInput.getText().toString());
-                params.put("created_at", currentDate.format(date));
-                params.put("updated_at", currentDate.format(date));
-                Toast.makeText(this, ""+params, Toast.LENGTH_LONG).show();
+                int position = lokasiInput.getSelectedItemPosition();
+
+
+                if (rutin.isChecked()){
+                    params.put("foto_masjid", locations.get(position).getImg());
+                    params.put("setiap_hari", spinStiaphari.getSelectedItem().toString());
+                    params.put("pekan", stringBuilder.toString());
+                    params.put("tanggal", "");
+                    params.put("mulai", timeMulai.getText().toString());
+                    params.put("sampai", timeSampai.getText().toString());
+                    params.put("tema", edtTema.getText().toString());
+                    params.put("pemateri", edtPemateri.getText().toString());
+                    params.put("lokasi", lokasiInput.getSelectedItem().toString());
+                    params.put("lat", String.valueOf(locations.get(position).getLat()));
+                    params.put("lng", String.valueOf(locations.get(position).getLng()));
+                    params.put("cp", edtCp.getText().toString());
+                    submitKajian(url,params,recylerVw);
+                    startActivity(new Intent(this, AdminActivity.class));
+                    Toast.makeText(this, "AZ"+params, Toast.LENGTH_LONG).show();
+                }else if (tdkRutin.isChecked()){
+                    params.put("foto_masjid", locations.get(position).getImg());
+                    params.put("setiap_hari", "");
+                    params.put("pekan", "");
+                    params.put("tanggal", tglInput.getText().toString());
+                    params.put("mulai", timeMulai.getText().toString());
+                    params.put("sampai", timeSampai.getText().toString());
+                    params.put("tema", edtTema.getText().toString());
+                    params.put("pemateri", edtPemateri.getText().toString());
+                    params.put("lokasi", locations.get(position).getName());
+                    params.put("lat", String.valueOf(locations.get(position).getLat()));
+                    params.put("lng", String.valueOf(locations.get(position).getLng()));
+                    params.put("cp", edtCp.getText().toString());
+                    submitKajian(url,params,recylerVw);
+                    startActivity(new Intent(this, AdminActivity.class));
+                    Toast.makeText(this, "BZ"+params, Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(this, "Fail.....", Toast.LENGTH_LONG).show();
+                }
                 break;
         }
+
     }
+
+    private void submitKajian(String url, final HashMap<String, String> params, final RecyclerView recyclerVw){
+        StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if (rutin.isChecked()) {
+                        Toast.makeText(AdminInput.this, "Rutin Menginput", Toast.LENGTH_SHORT).show();
+                        dataKajian.getJadwalKHari(recyclerVw, api.POST_JADWAL);
+                    }else if (tdkRutin.isChecked()){
+                        dataKajian.getJadwalKPekan(recyclerVw, api.POST_JADWAL);
+                        Toast.makeText(AdminInput.this, "Tidak Rutin Menginput", Toast.LENGTH_SHORT).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(AdminInput.this, "Gagal Input, Coba Lagi!", Toast.LENGTH_SHORT).show();
+
+                Log.d("error", error.toString());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = params;
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(post);
+    }
+
 
     private void checkJenisRutin() {
         if (rutin.isChecked()) {
@@ -362,21 +449,32 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
         }
     }
 
+    private void generateLocationDummy() {
+        int[] masjid = new int[]{
+                R.drawable.msjid,
+                R.drawable.ibnuabbas,
+                R.drawable.imamsyafii,
+                R.drawable.alhidayah,
+                R.drawable.rsu_khodijah,
+                R.drawable.nidausalam,
+                R.drawable.as_salam,
+                R.drawable.alhikmah,
+                R.drawable.muttaqin,
+                R.drawable.ghoni,
+        };
+
+    }
+
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        String date = dayOfMonth + " " + utils.selectMonth((monthOfYear + 1)) + " " + year;
+        String date =  year + ":" + (monthOfYear + 1) + ":" + dayOfMonth;
         tglInput.setText(date);
     }
 
-    @Override
-    public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
-        String time = "Pukul " + hourOfDay + "." + minute + " WIB";
-        timeInput.setText(time);
-    }
 
     private static final String[] ID_SETIAP_HARI = new String[]{
-            "Pilih Hari", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"
+            "Pilih Hari :", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"
     };
 
 

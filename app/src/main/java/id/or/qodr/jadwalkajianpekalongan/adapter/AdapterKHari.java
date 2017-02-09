@@ -8,11 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import id.or.qodr.jadwalkajianpekalongan.DetailKHari;
 import id.or.qodr.jadwalkajianpekalongan.R;
 import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
+import id.or.qodr.jadwalkajianpekalongan.model.Location;
 
 /**
  * Created by adul on 20/01/17.
@@ -22,10 +25,12 @@ public class AdapterKHari extends RecyclerView.Adapter<VHKHari> {
 
     private Context context;
     private List<JadwalModel> listJadwal;
+    private List<Location> listLokasi;
 
-    public AdapterKHari(Context context, List<JadwalModel> listJadwal) {
+    public AdapterKHari(Context context, List<JadwalModel> listJadwal, List<Location> listLokasi) {
         this.context = context;
         this.listJadwal = listJadwal;
+        this.listLokasi = listLokasi;
     }
 
     @Override
@@ -40,7 +45,12 @@ public class AdapterKHari extends RecyclerView.Adapter<VHKHari> {
         holder.mulai.setText(mule[0]+":"+mule[1]);
         String[] sampe = listJadwal.get(position).sampai.split(":");
         holder.sampai.setText(sampe[0]+":"+sampe[1]);
+        String imgUri = listJadwal.get(position).foto_masjid.toString();
+        Toast.makeText(context, ""+imgUri, Toast.LENGTH_SHORT).show();
 
+//        holder.img.setImageResource(listLokasi.get(position).getImg());
+        Glide.with(context).load(imgUri).into(holder.img);
+//        Picasso.with(context).load(listJadwal.get(position).foto_masjid()).into(holder.img);
         holder.tema.setText(listJadwal.get(position).tema);
         holder.pemateri.setText(listJadwal.get(position).pemateri);
         holder.lokasi.setText(listJadwal.get(position).lokasi);

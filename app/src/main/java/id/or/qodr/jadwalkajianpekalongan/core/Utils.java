@@ -105,4 +105,33 @@ public class Utils {
         }
         return monthString;
     }
+
+    public String showDayByID(int dayID) {
+        String stringDay = null;
+
+        switch (dayID) {
+            case 1:
+                stringDay = "Ahad";
+                break;
+            case 2:
+                stringDay = "Senin";
+                break;
+            case 3:
+                stringDay = "Selasa";
+                break;
+            case 4:
+                stringDay = "Rabu";
+                break;
+            case 5:
+                stringDay = "Kamis";
+                break;
+            case 6:
+                stringDay = "Jumat";
+                break;
+            case 7:
+                stringDay = "Sabtu";
+                break;
+        }
+        return stringDay;
+    }
 }
