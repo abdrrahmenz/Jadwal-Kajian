@@ -55,7 +55,53 @@ public class Utils {
                 monthString = "December";
                 break;
             default:
-                monthString = "Uh-oh!";
+                monthString = "None";
+        }
+        return monthString;
+    }
+
+    public String selectPekan(String montAsString) {
+        String monthString = null;
+        // the java switch/case statement
+        switch (montAsString) {
+            case "01":
+                monthString = "January";
+                break;
+            case "02":
+                monthString = "February";
+                break;
+            case "03":
+                monthString = "Maret";
+                break;
+            case "04":
+                monthString = "April";
+                break;
+            case "05":
+                monthString = "May";
+                break;
+            case "06":
+                monthString = "Juni";
+                break;
+            case "07":
+                monthString = "July";
+                break;
+            case "08":
+                monthString = "Agustus";
+                break;
+            case "09":
+                monthString = "September";
+                break;
+            case "10":
+                monthString = "October";
+                break;
+            case "11":
+                monthString = "November";
+                break;
+            case "12":
+                monthString = "December";
+                break;
+            default:
+                monthString = "None";
         }
         return monthString;
     }
@@ -101,7 +147,7 @@ public class Utils {
                 monthString = "Dec";
                 break;
             default:
-                monthString = "Uh-oh!";
+                monthString = "None";
         }
         return monthString;
     }

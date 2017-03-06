@@ -19,14 +19,20 @@
         android:required="true" />
 
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
+        android:noHistory = "true"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".DashboardActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".Login"
@@ -43,6 +49,7 @@
         </activity>
         <activity
             android:name=".DetailKHari"
+            android:label="@string/title_detail"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -71,7 +78,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyA_FDM1Ou-q_mz1OrM9O-xTcGcTJH51H3Q" />
 
         <activity
             android:name=".MapsActivity"
@@ -80,17 +87,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="id.or.qodr.jadwalkajianpekalongan.DashboardActivity" />
         </activity>
-        <activity android:name=".AdminInput"
-            android:theme="@style/ThemeLogin"
-            android:label="Input Kajian">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity
+            android:name=".AdminInput"
+            android:label="Input Kajian"
+            android:theme="@style/ThemeLogin">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="id.or.qodr.jadwalkajianpekalongan.AdminActivity" />
+        </activity>
+        <activity android:name=".DetailKPekan">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="id.or.qodr.jadwalkajianpekalongan.DashboardActivity"/>
         </activity>
     </application>
 

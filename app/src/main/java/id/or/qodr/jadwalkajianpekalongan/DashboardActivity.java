@@ -1,14 +1,26 @@
 package id.or.qodr.jadwalkajianpekalongan;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import id.or.qodr.jadwalkajianpekalongan.adapter.ViewPagerAdapter;
 import id.or.qodr.jadwalkajianpekalongan.fragment.KajianHariIni;
@@ -17,7 +29,9 @@ import id.or.qodr.jadwalkajianpekalongan.fragment.KajianPekanIni;
 public class DashboardActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private ViewPager viewpager;
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,11 +40,26 @@ public class DashboardActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        viewpager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewpager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewpager);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        DashboardActivity.this.finish();
+                        Toast.makeText(DashboardActivity.this, "close", Toast.LENGTH_SHORT).show();
+                    }
+                }).create().show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -38,8 +67,8 @@ public class DashboardActivity extends AppCompatActivity {
         adapter.addFragment(new KajianHariIni(), "Kajian Hari Ini");
         adapter.addFragment(new KajianPekanIni(), "Kajian Pekan Ini");
         viewPager.setAdapter(adapter);
+        viewpager.getAdapter().notifyDataSetChanged();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -53,9 +82,6 @@ public class DashboardActivity extends AppCompatActivity {
             case R.id.login:
                 startActivity(new Intent(this, Login.class));
                 return true;
-//            case R.id.logout:
-//                startActivity(new Intent(this, DashboardActivity.class));
-//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

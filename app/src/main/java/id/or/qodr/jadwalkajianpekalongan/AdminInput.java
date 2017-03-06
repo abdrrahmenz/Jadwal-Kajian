@@ -1,5 +1,6 @@
 package id.or.qodr.jadwalkajianpekalongan;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,13 +41,17 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import id.or.qodr.jadwalkajianpekalongan.adapter.AdapterKHari;
 import id.or.qodr.jadwalkajianpekalongan.classes.DataKajian;
 import id.or.qodr.jadwalkajianpekalongan.core.API;
 import id.or.qodr.jadwalkajianpekalongan.core.Utils;
+import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
 import id.or.qodr.jadwalkajianpekalongan.model.Location;
 
 public class AdminInput extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
+    @BindView(R.id._id)
+    TextView _id;
     @BindView(R.id.rutin)
     RadioButton rutin;
     @BindView(R.id.tdkRutin)
@@ -84,11 +89,15 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
     private String KEY_LOKASI = "LOKASI";
     String kordinat = null;
     private List<Location> locations;
+    private List<JadwalModel> jdwalList;
     private ArrayAdapter<Location> locationArrayAdapter;
     StringBuilder stringBuilder = new StringBuilder();
     List<CharSequence> list = new ArrayList<CharSequence>();
     private DataKajian dataKajian;
-
+    private ProgressDialog progressDialog;
+    AdapterKHari adpter;
+    String id,jenis_rutin,jenis_tdkrutin,setiap, pkan, tggl,mule,sampe,foto,tema,pemteri,lokasi,cp, lat, lng;
+    private String lat_req, lng_req,mule_req,sampe_req,img_req,tema_req,pemteri_req,lokasi_req,cp_req, id_req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +107,69 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
 
         utils = new Utils(this);
         api = new API();
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            kordinat = extras.getString(KEY_LOKASI);
-        }
+        adpter = new AdapterKHari(this,jdwalList);
+//        Bundle extras = getIntent().getExtras();
+//        if (extras != null) {
+//            kordinat = extras.getString(KEY_LOKASI);
+//        }
         opt_rutin.setVisibility(View.GONE);
         tglInputLayout.setVisibility(View.GONE);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            setTitle(getString(R.string.title_edit_kajian));
+            id_req = extras.getString("id_key");
+            lat_req = extras.getString("lat_key");
+            lng_req = extras.getString("lng_key");
+            mule_req = extras.getString("mule_key");
+            sampe_req = extras.getString("sampe_key");
+            img_req = extras.getString("img_key");
+            tema_req = extras.getString("tema_key");
+            pemteri_req = extras.getString("pemteri_key");
+            lokasi_req = extras.getString("lokasi_key");
+            cp_req = extras.getString("cp_key");
+            btnAddkajian.setText("Save Kajian");
+            btnAddkajian.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = api.PUT_JADWAL;
+
+                    int position = lokasiInput.getSelectedItemPosition();
+                    id = _id.getText().toString();
+                    jenis_rutin = rutin.getText().toString();
+                    jenis_tdkrutin = tdkRutin.getText().toString();
+                    foto = locations.get(position).getImg();
+                    setiap = spinStiaphari.getSelectedItem().toString();
+                    pkan = stringBuilder.toString();
+                    tggl = tglInput.getText().toString();
+                    mule = timeMulai.getText().toString();
+                    sampe = timeSampai.getText().toString();
+                    tema = edtTema.getText().toString();
+                    pemteri = edtPemateri.getText().toString();
+                    lokasi = lokasiInput.getSelectedItem().toString();
+                    lat = String.valueOf(locations.get(position).getLat());
+                    lng = String.valueOf(locations.get(position).getLng());
+                    cp = edtCp.getText().toString();
+                    editKajian(url);
+                    startActivity(new Intent(AdminInput.this, AdminActivity.class));
+                    finish();
+
+                }
+            });
+        }else {
+            setTitle(getString(R.string.title_input_kajian));
+            lat_req = "";
+            lng_req = "";
+            mule_req = "Hours-Minutes";
+            sampe_req = "Hours-Minutes";
+            img_req = "";
+            tema_req = "";
+            pemteri_req = "";
+            lokasi_req = "";
+            cp_req = "";
+        }
+
+        setTextDetailKajian();
 
         locations = new ArrayList<>();
         locations.add(new Location("Pilih Lokasi",-7.030593, 109.609775, api.GET_IMG+"msjid.jpg"));
@@ -221,9 +287,22 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
 
     }
 
-    private void imgMasjid() {
-
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(AdminInput.this, AdminActivity.class));
+        finish();
     }
+
+    public void setTextDetailKajian(){
+        _id.setText(id_req);
+        timeMulai.setText(mule_req);
+        timeSampai.setText(sampe_req);
+        edtTema.setText(tema_req);
+        edtPemateri.setText(pemteri_req);
+//        lokasiInput.setSelected(lokasi_req);
+        edtCp.setText(cp_req);
+    }
+
 
     public int getDayID(int date){
         int week=0;
@@ -352,6 +431,7 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
             case R.id.btn_cancel:
                 Toast.makeText(this, "cancel", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(AdminInput.this, AdminActivity.class));
+                finish();
 
                 break;
             case R.id.btn_addkajian:
@@ -359,8 +439,8 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
                 HashMap<String, String> params = new HashMap<String, String>();
                 int position = lokasiInput.getSelectedItemPosition();
 
-
                 if (rutin.isChecked()){
+                    params.put("jenis_kajian", rutin.getText().toString());
                     params.put("foto_masjid", locations.get(position).getImg());
                     params.put("setiap_hari", spinStiaphari.getSelectedItem().toString());
                     params.put("pekan", stringBuilder.toString());
@@ -374,9 +454,10 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
                     params.put("lng", String.valueOf(locations.get(position).getLng()));
                     params.put("cp", edtCp.getText().toString());
                     submitKajian(url,params,recylerVw);
-                    startActivity(new Intent(this, AdminActivity.class));
-                    Toast.makeText(this, "AZ"+params, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AdminInput.this, AdminActivity.class));
+                    finish();
                 }else if (tdkRutin.isChecked()){
+                    params.put("jenis_kajian", tdkRutin.getText().toString());
                     params.put("foto_masjid", locations.get(position).getImg());
                     params.put("setiap_hari", "");
                     params.put("pekan", "");
@@ -390,8 +471,8 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
                     params.put("lng", String.valueOf(locations.get(position).getLng()));
                     params.put("cp", edtCp.getText().toString());
                     submitKajian(url,params,recylerVw);
-                    startActivity(new Intent(this, AdminActivity.class));
-                    Toast.makeText(this, "BZ"+params, Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(AdminInput.this, AdminActivity.class));
+                    finish();
                 }else{
                     Toast.makeText(this, "Fail.....", Toast.LENGTH_LONG).show();
                 }
@@ -401,6 +482,7 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
     }
 
     private void submitKajian(String url, final HashMap<String, String> params, final RecyclerView recyclerVw){
+//        showLoading();
         StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -420,8 +502,8 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(AdminInput.this, "Gagal Input, Coba Lagi!", Toast.LENGTH_SHORT).show();
-
                 Log.d("error", error.toString());
+//                hideLoading();
             }
         }) {
             @Override
@@ -433,6 +515,73 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(post);
     }
+
+    private void editKajian(String url){
+//        showLoading();
+        StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Toast.makeText(getApplicationContext(), "editNoteSukses", Toast.LENGTH_SHORT).show();
+                    adpter.notifyDataSetChanged();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Gagal Edit, Coba Lagi!", Toast.LENGTH_SHORT).show();
+                Log.d("error", error.toString());
+//                hideLoading();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<>();
+                if (rutin.isChecked()){
+                    map.put("id", id);
+                    map.put("jenis_kajian", jenis_rutin);
+                    map.put("foto_masjid", foto);
+                    map.put("setiap_hari", setiap);
+                    map.put("pekan", pkan);
+                    map.put("tanggal", "");
+                    map.put("mulai", mule);
+                    map.put("sampai", sampe);
+                    map.put("tema", tema);
+                    map.put("pemateri", pemteri);
+                    map.put("lokasi", lokasi);
+                    map.put("lat", lat);
+                    map.put("lng", lng);
+                    map.put("cp", cp);
+
+                }else if (tdkRutin.isChecked()){
+                    map.put("id", id);
+                    map.put("jenis_kajian", jenis_tdkrutin);
+                    map.put("foto_masjid", foto);
+                    map.put("setiap_hari", "");
+                    map.put("pekan", "");
+                    map.put("tanggal", tggl);
+                    map.put("mulai", mule);
+                    map.put("sampai", sampe);
+                    map.put("tema", tema);
+                    map.put("pemateri", pemteri);
+                    map.put("lokasi", lokasi);
+                    map.put("lat", lat);
+                    map.put("lng", lng);
+                    map.put("cp", cp);
+
+                }else{
+                    Toast.makeText(AdminInput.this, "Not Selected", Toast.LENGTH_SHORT).show();
+                }
+                return map;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(post);
+    }
+
+
 
 
     private void checkJenisRutin() {
@@ -448,21 +597,16 @@ public class AdminInput extends AppCompatActivity implements DatePickerDialog.On
             tglInputLayout.setVisibility(View.VISIBLE);
         }
     }
+    public void showLoading() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading data...");
+        progressDialog.show();
+    }
 
-    private void generateLocationDummy() {
-        int[] masjid = new int[]{
-                R.drawable.msjid,
-                R.drawable.ibnuabbas,
-                R.drawable.imamsyafii,
-                R.drawable.alhidayah,
-                R.drawable.rsu_khodijah,
-                R.drawable.nidausalam,
-                R.drawable.as_salam,
-                R.drawable.alhikmah,
-                R.drawable.muttaqin,
-                R.drawable.ghoni,
-        };
-
+    public void hideLoading() {
+        if (progressDialog.isShowing()) {
+            progressDialog.hide();
+        }
     }
 
     @Override

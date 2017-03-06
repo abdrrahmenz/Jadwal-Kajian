@@ -10,7 +10,10 @@
     <string name="logout">Logout</string>
     <string name="about">Info</string>
     <string name="title_activity_admin">Admin</string>
+    <string name="title_detail">Detail Kajian</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_edit_kajian">Edit Kajian</string>
+    <string name="title_input_kajian">Input Kajian</string>
     <string-array name="pekan_array">
         <item>1</item>
         <item>2</item>

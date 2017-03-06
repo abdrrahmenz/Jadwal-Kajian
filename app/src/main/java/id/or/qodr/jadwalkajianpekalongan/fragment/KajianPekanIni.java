@@ -8,8 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import id.or.qodr.jadwalkajianpekalongan.R;
@@ -45,7 +50,21 @@ public class KajianPekanIni extends Fragment {
         jadwal = new ArrayList<JadwalModel>();
         rvKPekan = (RecyclerView) getActivity().findViewById(R.id.rcvKajPekan);
 
+        Date date = new Date();
+        Calendar now = Calendar.getInstance();
 
-        dataKajian.getJadwalKPekan(rvKPekan, api.GET_JADWAL);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        now.setTime(date);
+
+        now.add(Calendar.DAY_OF_MONTH, 1);
+        Date weekStart = now.getTime();
+
+        now.add(Calendar.DAY_OF_MONTH, 6);
+        Date weekEnd = now.getTime();
+
+        String start = format.format(weekStart.getTime());
+        String ends = format.format(weekEnd.getTime());
+
+        dataKajian.getJadwalKPekan(rvKPekan, api.GET_JADWAL_PEKAN+start+"/"+ends);
     }
 }

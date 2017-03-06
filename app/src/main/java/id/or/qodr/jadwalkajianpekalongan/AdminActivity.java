@@ -1,52 +1,110 @@
 package id.or.qodr.jadwalkajianpekalongan;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
+
+import java.util.HashMap;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import id.or.qodr.jadwalkajianpekalongan.adapter.ViewPagerAdapter;
 import id.or.qodr.jadwalkajianpekalongan.fragment.KajianHariIni;
 import id.or.qodr.jadwalkajianpekalongan.fragment.KajianPekanIni;
 
 public class AdminActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
+    @BindView(R.id.viewpager)
+    ViewPager viewpager;
+    @BindView(R.id.btnDel)
+    com.github.clans.fab.FloatingActionButton btnDel;
+    @BindView(R.id.btnEdt)
+    com.github.clans.fab.FloatingActionButton btnEdt;
+    @BindView(R.id.btnAdd)
+    com.github.clans.fab.FloatingActionButton btnAdd;
+    @BindView(R.id.fabMenu)
+    FloatingActionMenu fabMenu;
+
+    // Session Manager Class
+    SessionManager session;
+    boolean doubleBackToExitPressedOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
+
+        Toast.makeText(getApplicationContext(), "User Login Status: " + session.isLoggedIn(), Toast.LENGTH_LONG).show();
+
+        /**
+         * Call this function whenever you want to check user login
+         * This will redirect user to LoginActivity is he is not
+         * logged in
+         * */
+        session.checkLogin();
+
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AdminActivity.this, AdminInput.class));
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupViewPager(viewpager);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        tabs.setupWithViewPager(viewpager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = false;
+        Toast.makeText(this, "Please Logout to exit", Toast.LENGTH_SHORT).show();
+
+
+    }
+
+    @OnClick({R.id.btnDel, R.id.btnEdt, R.id.btnAdd})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnDel:
+                break;
+            case R.id.btnEdt:
+                if (btnEdt.isClickable()){
+
+                }
+                break;
+            case R.id.btnAdd:
+                Intent input = new Intent(this, AdminInput.class);
+//                input.putExtra("input", "dari_input");
+                startActivity(input);
+                finish();
+                break;
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -54,8 +112,8 @@ public class AdminActivity extends AppCompatActivity {
         adapter.addFragment(new KajianHariIni(), "Kajian Hari Ini");
         adapter.addFragment(new KajianPekanIni(), "Kajian Pekan Ini");
         viewPager.setAdapter(adapter);
+        viewpager.getAdapter().notifyDataSetChanged();
     }
-
 
 
     @Override
@@ -67,8 +125,16 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            /**
+             * Logout button click event
+             * */
             case R.id.logout:
-                startActivity(new Intent(this, DashboardActivity.class));
+                // Clear the session data
+                // This will clear all session data and
+                // redirect user to LoginActivity
+                session.logoutUser();
+                startActivity(new Intent(AdminActivity.this, Login.class));
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

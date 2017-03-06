@@ -9,17 +9,22 @@ import android.os.Parcelable;
 
 public class JadwalModel implements Parcelable {
 
-    public String id, foto_masjid, tanggal, mulai, sampai, tema, pemateri, lokasi, cp;
+    public String id, jenis_kajian, foto_masjid, setiap_hari, pekan, tanggal, mulai, sampai, tema, pemateri, lokasi, lat, lng, cp;
 
     protected JadwalModel(Parcel in) {
         id = in.readString();
+        jenis_kajian = in.readString();
         foto_masjid = in.readString();
+        setiap_hari = in.readString();
+        pekan = in.readString();
         tanggal = in.readString();
         mulai = in.readString();
         sampai = in.readString();
         tema = in.readString();
         pemateri = in.readString();
         lokasi = in.readString();
+        lat = in.readString();
+        lng = in.readString();
         cp = in.readString();
     }
 
@@ -43,13 +48,18 @@ public class JadwalModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
+        dest.writeString(jenis_kajian);
         dest.writeString(foto_masjid);
+        dest.writeString(setiap_hari);
+        dest.writeString(pekan);
         dest.writeString(tanggal);
         dest.writeString(mulai);
         dest.writeString(sampai);
         dest.writeString(tema);
         dest.writeString(pemateri);
         dest.writeString(lokasi);
+        dest.writeString(lat);
+        dest.writeString(lng);
         dest.writeString(cp);
     }
 }

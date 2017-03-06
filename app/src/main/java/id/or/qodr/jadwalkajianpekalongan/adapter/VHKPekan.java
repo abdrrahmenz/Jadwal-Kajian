@@ -13,14 +13,15 @@ import id.or.qodr.jadwalkajianpekalongan.R;
 
 public class VHKPekan extends RecyclerView.ViewHolder {
 
-    public TextView tanggal,bulan,mulai, sampai, tema, pemateri, lokasi, cp;
+    public TextView id, tanggal,bulan,mulai, sampai, tema, pemateri, lokasi, cp;
     public View rootViewPekan;
     public ImageView img;
 
     public VHKPekan(View itemView) {
         super(itemView);
         rootViewPekan = itemView;
-        img = (ImageView) itemView.findViewById(R.id.img);
+//        img = (ImageView) itemView.findViewById(R.id.img);
+        id = (TextView) itemView.findViewById(R.id._id);
         tanggal = (TextView) itemView.findViewById(R.id.tanggal);
         bulan = (TextView) itemView.findViewById(R.id.bulan);
         mulai = (TextView) itemView.findViewById(R.id.mulaiPekan);

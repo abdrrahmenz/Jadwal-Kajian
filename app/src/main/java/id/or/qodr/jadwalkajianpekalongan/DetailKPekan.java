@@ -22,10 +22,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.or.qodr.jadwalkajianpekalongan.core.Utils;
 
-public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback {
+public class DetailKPekan extends AppCompatActivity implements OnMapReadyCallback {
 
     @BindView(R.id.bgheader)
     ImageView imgLocDetail;
+    @BindView(R.id.tglDetail)
+    TextView tglDetail;
     @BindView(R.id.mulaiDetail)
     TextView mulaiDetail;
     @BindView(R.id.sampaiDetail)
@@ -39,12 +41,13 @@ public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback
     @BindView(R.id.lokasiDetail)
     TextView lokasiDetail;
     private GoogleMap mMap;
-    private String lat_req, lng_req,mule_req,sampe_req,img_req,tema_req,pemteri_req,lokasi_req,cp_req;
+    private Utils utils;
+    private String lat_req, lng_req,mule_req,sampe_req,tgl_req,img_req,tema_req,pemteri_req,lokasi_req,cp_req;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail_khari);
+        setContentView(R.layout.activity_detail_kpekan);
         ButterKnife.bind(this);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.MyToolbar);
@@ -53,8 +56,10 @@ public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
 
+        utils = new Utils(this);
+
         CollapsingToolbarLayout collaps = (CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
-        collaps.setTitle("Detail Kajian Hari");
+        collaps.setTitle("Detail Kajian Pekan");
 
         Context context = this;
         collaps.setContentScrimColor(ContextCompat.getColor(context, R.color.white));
@@ -67,6 +72,7 @@ public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback
             lng_req = extras.getString("lng_key");
             mule_req = extras.getString("mule_key");
             sampe_req = extras.getString("sampe_key");
+            tgl_req = extras.getString("tgl_key");
             img_req = extras.getString("img_key");
             tema_req = extras.getString("tema_key");
             pemteri_req = extras.getString("pemteri_key");
@@ -85,6 +91,8 @@ public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback
     public void setTextDetailKajian(){
         String[] mule = mule_req.split(":");
         String[] smpe = sampe_req.split(":");
+        String[] pisah = tgl_req.split("-");
+        tglDetail.setText(pisah[2]+" "+utils.selectPekan(pisah[1]) + " " +pisah[0]);
         mulaiDetail.setText("Pukul "+mule[0]+":"+mule[1]);
         sampaiDetail.setText(smpe[0]+":"+smpe[1]+ " WIB");
         temaDetail.setText(tema_req);
@@ -95,7 +103,6 @@ public class DetailKHari extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
