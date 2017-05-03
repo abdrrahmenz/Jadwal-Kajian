@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "573964819108",
+    "firebase_url": "https://jadwalkajianpekalongan.firebaseio.com",
+    "project_id": "jadwalkajianpekalongan",
+    "storage_bucket": "jadwalkajianpekalongan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573964819108:android:de724f9496fdd926",
+        "android_client_info": {
+          "package_name": "id.or.qodr.jadwalkajianpekalongan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "573964819108-oflo2p40tn2i2fdqguaa8ma4vet99rmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.or.qodr.jadwalkajianpekalongan",
+            "certificate_hash": "d8506526d39dbf5749a127b2d77ce975508c9684"
+          }
+        },
+        {
+          "client_id": "573964819108-s4k9qqfhikb438jcnjj65lu9db91lj9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATyWAHzJkBX24st7N3uUh525TtpHBo5yQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "573964819108-s4k9qqfhikb438jcnjj65lu9db91lj9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

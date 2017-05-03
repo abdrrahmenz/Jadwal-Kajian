@@ -6,7 +6,7 @@ package id.or.qodr.jadwalkajianpekalongan.core;
 
 public class API {
 
-    public final String GET_JADWAL = "http://api.bbenkpartnersolo.com/jadwal";
+    public final String GET_JADWAL = "http://api.bbenkpartnersolo.com/";
     public final String GET_JADWAL_HARI = "http://api.bbenkpartnersolo.com/jadwal/";
     public final String GET_JADWAL_PEKAN = "http://api.bbenkpartnersolo.com/jadwal/";
     public final String POST_JADWAL = "http://api.bbenkpartnersolo.com/jadwal/insert";

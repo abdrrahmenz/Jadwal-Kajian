@@ -3,13 +3,13 @@ package id.or.qodr.jadwalkajianpekalongan.adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -19,12 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 
-import java.text.DateFormat;
-import java.text.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -34,15 +34,12 @@ import java.util.Map;
 
 import id.or.qodr.jadwalkajianpekalongan.AdminActivity;
 import id.or.qodr.jadwalkajianpekalongan.AdminInput;
-import id.or.qodr.jadwalkajianpekalongan.DetailKHari;
 import id.or.qodr.jadwalkajianpekalongan.DetailKPekan;
-import id.or.qodr.jadwalkajianpekalongan.MapsActivity;
 import id.or.qodr.jadwalkajianpekalongan.R;
 import id.or.qodr.jadwalkajianpekalongan.SessionManager;
 import id.or.qodr.jadwalkajianpekalongan.core.API;
 import id.or.qodr.jadwalkajianpekalongan.core.Utils;
 import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
-import id.or.qodr.jadwalkajianpekalongan.model.Location;
 
 /**
  * Created by adul on 23/01/17.
@@ -55,13 +52,24 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
     private Utils utils;
     private SessionManager session;
     private API api;
+    JSONArray json_listkajian;
 
-    AdapterKHari adpter;
-    private String _id, lat, lng, imgUri, tema, pemateri, lokasi, cp, mulei,smpei;
+    private AdapterKPekan adpter;
+    private String date, _id, type, tgl, pekan, day, lat, lng, imgUri, tema, pemateri, lokasi, cp, mulei,smpei;
 
-    public AdapterKPekan(Context context, List<JadwalModel> listJadwal) {
+
+    public void setJson_listkajian(JSONArray json_listkajian) {
+        this.json_listkajian = json_listkajian;
+        notifyDataSetChanged();
+    }
+
+//    public AdapterKPekan(Context context, List<JadwalModel> listJadwal) {
+//        this.context = context;
+//        this.listJadwal = listJadwal;
+//    }
+
+    public AdapterKPekan(Context context) {
         this.context = context;
-        this.listJadwal = listJadwal;
     }
 
     @Override
@@ -71,7 +79,7 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
         // Session Manager
         session = new SessionManager(context);
 
-        adpter = new AdapterKHari(context,listJadwal);
+//        adpter = new AdapterKPekan(context,listJadwal);
 
         utils = new Utils(context);
         api = new API();
@@ -79,136 +87,391 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
         return new VHKPekan(layoutView);
     }
 
+
+
     @Override
     public void onBindViewHolder(VHKPekan holder,final int position) {
-        final JadwalModel index = listJadwal.get(position);
 
-        String[] pisah = index.tanggal.split("-");
-        holder.tanggal.setText(pisah[2]);
-        holder.bulan.setText(utils.monthPekan(pisah[1]));
+        try {
+            final JSONObject listData = json_listkajian.getJSONObject(position);
 
-        String[] mule = index.mulai.split(":");
-        holder.mulai.setText(mule[0]+":"+mule[1]);
+            Typeface custom_font = Typeface.createFromAsset(context.getAssets(), "fonts/digital-7.ttf");
 
-        String[] sampe = index.sampai.split(":");
-        holder.sampai.setText(sampe[0]+":"+sampe[1]);
+            String[] pisah = listData.getString("tanggal").split("-");
+            SimpleDateFormat format = new SimpleDateFormat("F");
+            Calendar c = Calendar.getInstance();
+            Date nowDate = new Date();
+            c.setTime(nowDate);
+            c.add(Calendar.DAY_OF_WEEK_IN_MONTH, 0);
+            Date week1 = c.getTime();
 
-//        String imgUri = listJadwal.get(position).foto_masjid.toString();
-//        Glide.with(context).load(imgUri).into(holder.img);
+            final String week = format.format(week1.getTime());
 
-        holder.tema.setText(index.tema);
-        holder.pemateri.setText(index.pemateri);
-        holder.lokasi.setText(index.lokasi);
-        holder.cp.setText(index.cp);
+            date = getDayOnWeek(listData.getString("setiap_hari"), Integer.parseInt(week));
 
-        holder.rootViewPekan.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(final View v) {
+            if (listData.getString("pekan").isEmpty()) {
+                holder.tanggal.setText(pisah[2]);
+                holder.tanggal.setTypeface(custom_font, Typeface.BOLD);
+                holder.bulan.setText(utils.monthPekan(pisah[1]));
+                holder.bulan.setTypeface(custom_font, Typeface.BOLD);
+            } else {
+                String[] dateSpt = date.split("-");
 
-                final CharSequence[] dialogitem = {"Edit", "Delete"};
-                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
-                dialog.setCancelable(true);
-                dialog.setItems(dialogitem, new DialogInterface.OnClickListener() {
+                holder.tanggal.setText(dateSpt[2]);
+                holder.tanggal.setTypeface(custom_font, Typeface.BOLD);
+                holder.bulan.setText(utils.monthPekan(dateSpt[1]));
+                holder.bulan.setTypeface(custom_font, Typeface.BOLD);
+            }
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
-                        // get user data from session
-                        HashMap<String, String> user = session.getUserDetails();
-                        // name
-                        String name = user.get(SessionManager.KEY_NAME);
+            String[] mule = listData.getString("mulai").split(":");
+            holder.mulai.setText(mule[0]+":"+mule[1]);
+            holder.mulai.setTypeface(custom_font, Typeface.BOLD);
+            String[] sampe = listData.getString("sampai").split(":");
+            holder.sampai.setText(sampe[0]+":"+sampe[1]);
+            holder.sampai.setTypeface(custom_font, Typeface.BOLD);
 
-                        //mengirim data ke activity yg lain
-                        _id = index.id.toString();
-                        lat = index.lat.toString();
-                        lng = index.lng.toString();
-                        imgUri = index.foto_masjid.toString();
-                        tema = index.tema.toString();
-                        pemateri = index.pemateri.toString();
-                        lokasi = index.lokasi.toString();
-                        cp = index.cp.toString();
-                        mulei = index.mulai.toString();
-                        smpei = index.sampai.toString();
-                        switch (which) {
-                            case 0:
-                                if (!session.isLoggedIn()){
-                                    Toast.makeText(context, "Maaf hanya admin yang bisa Edit", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    name.equals("");
-                                    Intent intent = new Intent(context, AdminInput.class);
-                                    intent.putExtra("id_key", _id);
-                                    intent.putExtra("lat_key", lat);
-                                    intent.putExtra("lng_key", lng);
-                                    intent.putExtra("mule_key", mulei);
-                                    intent.putExtra("sampe_key", smpei);
-                                    intent.putExtra("img_key", imgUri);
-                                    intent.putExtra("tema_key", tema);
-                                    intent.putExtra("pemteri_key", pemateri);
-                                    intent.putExtra("lokasi_key", lokasi);
-                                    intent.putExtra("cp_key", cp);
+            holder.tema.setText(listData.getString("tema"));
+            holder.pemateri.setText(listData.getString("pemateri"));
+            holder.lokasi.setText(listData.getString("lokasi"));
+            holder.lat.setText(listData.getString("lat"));
+            holder.lng.setText(listData.getString("lng"));
+            holder.cp.setText(listData.getString("cp"));
 
-                                    context.startActivity(intent);
-                                    Toast.makeText(context, "Position is " + _id, Toast.LENGTH_SHORT).show();
-                                }
-                                break;
-                            case 1:
-                                if (!session.isLoggedIn()){
-                                    Toast.makeText(context, "Maaf hanya admin yang bisa Hapus", Toast.LENGTH_SHORT).show();
+            holder.rootViewPekan.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
 
-                                }else {
-                                    name.equals("");
-                                    new AlertDialog.Builder(context)
-                                            .setTitle("Delete Kajian")
-                                            .setMessage("Are you sure want to delete this?")
-                                            .setNegativeButton(android.R.string.no, null)
-                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                                public void onClick(DialogInterface arg0, int arg1) {
-                                                    deleteKajian(api.DEL_JADWAL + _id);
-                                                    Intent intent = new Intent(context, AdminActivity.class);
-                                                    context.startActivity(intent);
+                    final CharSequence[] dialogitem = {"Edit", "Delete"};
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+                    dialog.setCancelable(true);
+                    dialog.setItems(dialogitem, new DialogInterface.OnClickListener() {
 
-                                                }
-                                            }).create().show();
-                                }
-                                break;
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+
+                            switch (which) {
+                                case 0:
+                                    if (!session.isLoggedIn()){
+                                        Toast.makeText(context, "Maaf hanya admin yang bisa Edit", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        try {
+                                        //mengirim data ke activity yg lain
+                                        Intent intent = new Intent(context, AdminInput.class);
+                                        intent.putExtra("id_key", listData.getString("id"));
+                                        intent.putExtra("type_key", listData.getString("jenis_kajian"));
+                                        intent.putExtra("tgl_key", listData.getString("tanggal"));
+                                        intent.putExtra("day_key", listData.getString("setiap_hari"));
+                                        intent.putExtra("pekan_key", listData.getString("pekan"));
+                                        intent.putExtra("mule_key", listData.getString("mulai"));
+                                        intent.putExtra("sampe_key", listData.getString("sampai"));
+                                        intent.putExtra("tema_key", listData.getString("tema"));
+                                        intent.putExtra("pemteri_key", listData.getString("pemateri"));
+                                        intent.putExtra("lokasi_key", listData.getString("lokasi"));
+                                        intent.putExtra("cp_key", listData.getString("cp"));
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(intent);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    break;
+                                case 1:
+                                    if (!session.isLoggedIn()){
+                                        Toast.makeText(context, "Maaf hanya admin yang bisa Hapus", Toast.LENGTH_SHORT).show();
+
+                                    }else {
+                                        new AlertDialog.Builder(context)
+                                                .setTitle("Delete Kajian")
+                                                .setMessage("Are you sure want to delete this?")
+                                                .setNegativeButton(android.R.string.no, null)
+                                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                    public void onClick(DialogInterface arg0, int arg1) {
+                                                        try {
+                                                        deleteKajian(api.DEL_JADWAL + listData.getInt("id"));
+                                                        Intent intent = new Intent(context, AdminActivity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        context.startActivity(intent);
+                                                        }catch (JSONException e){
+                                                            e.printStackTrace();
+                                                        }
+
+                                                    }
+                                                }).create().show();
+                                    }
+                                    break;
+                            }
                         }
+                    }).show();
+                    return false;
+                }
+            });
+
+            holder.rootViewPekan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+
+                    date = getDayOnWeek(listData.getString("setiap_hari"), Integer.parseInt(week));
+
+                    Intent intent = new Intent(context, DetailKPekan.class);
+                    intent.putExtra("id_key", listData.getInt("id"));
+                    intent.putExtra("type_key", listData.getString("jenis_kajian"));
+                    intent.putExtra("tgl_key", listData.getString("tanggal"));
+                    intent.putExtra("tgl2_key", date);
+                    intent.putExtra("day_key", listData.getString("setiap_hari"));
+                    intent.putExtra("pekan_key", listData.getString("pekan"));
+                    intent.putExtra("mule_key", listData.getString("mulai"));
+                    intent.putExtra("sampe_key", listData.getString("sampai"));
+                    intent.putExtra("tema_key", listData.getString("tema"));
+                    intent.putExtra("pemteri_key", listData.getString("pemateri"));
+                    intent.putExtra("lokasi_key", listData.getString("lokasi"));
+                    intent.putExtra("cp_key", listData.getString("cp"));
+                    intent.putExtra("lat_key", listData.getDouble("lat"));
+                    intent.putExtra("lng_key", listData.getDouble("lng"));
+                    intent.putExtra("img_key", listData.getString("foto_masjid"));
+                    context.startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }).show();
-                return false;
+                }
+            });
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+//        final JadwalModel index = listJadwal.get(position);
+//
+//        Typeface custom_font = Typeface.createFromAsset(context.getAssets(), "fonts/digital-7.ttf");
+//
+//        String[] pisah = index.tanggal.split("-");
+//        SimpleDateFormat format = new SimpleDateFormat("F");
+//        Calendar c = Calendar.getInstance();
+//        Date nowDate = new Date();
+//        c.setTime(nowDate);
+//        c.add(Calendar.DAY_OF_WEEK_IN_MONTH, 0);
+//        Date week1 = c.getTime();
+//
+//        final String week = format.format(week1.getTime());
+//
+//        date = getDayOnWeek(index.setiap_hari, Integer.parseInt(week));
+//
+//        if (index.pekan.isEmpty()) {
+//            holder.tanggal.setText(pisah[2]);
+//            holder.tanggal.setTypeface(custom_font, Typeface.BOLD);
+//            holder.bulan.setText(utils.monthPekan(pisah[1]));
+//            holder.bulan.setTypeface(custom_font, Typeface.BOLD);
+//        } else {
+//            String[] dateSpt = date.split("-");
+//
+//            Log.i("TAG", "onBindViewHolder: "+dateSpt);
+//            holder.tanggal.setText(dateSpt[2]);
+//            holder.tanggal.setTypeface(custom_font, Typeface.BOLD);
+//            holder.bulan.setText(utils.monthPekan(dateSpt[1]));
+//            holder.bulan.setTypeface(custom_font, Typeface.BOLD);
+//        }
+//        String[] mule = index.mulai.split(":");
+//        holder.mulai.setText(mule[0]+":"+mule[1]);
+//        holder.mulai.setTypeface(custom_font, Typeface.BOLD);
+//
+//        String[] sampe = index.sampai.split(":");
+//        holder.sampai.setText(sampe[0]+":"+sampe[1]);
+//        holder.sampai.setTypeface(custom_font, Typeface.BOLD);
+//
+//        holder.tema.setText(index.tema);
+//        holder.pemateri.setText(index.pemateri);
+//        holder.lokasi.setText(index.lokasi);
+//        holder.lat.setText(index.lat);
+//        holder.lng.setText(index.lng);
+//        holder.cp.setText(index.cp);
+//
+//        holder.rootViewPekan.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(final View v) {
+//
+//                final CharSequence[] dialogitem = {"Edit", "Delete"};
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+//                dialog.setCancelable(true);
+//                dialog.setItems(dialogitem, new DialogInterface.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // TODO Auto-generated method stub
+//                        // get user data from session
+//                        HashMap<String, String> user = session.getUserDetails();
+//                        // name
+//                        String name = user.get(SessionManager.KEY_NAME);
+//
+//                        //mengirim data ke activity yg lain
+//                        _id = index.id.toString();
+//                        type = index.jenis_kajian.toString();
+//                        tgl = index.tanggal.toString();
+//                        day = index.setiap_hari.toString();
+//                        pekan = index.pekan.toString();
+//                        tema = index.tema.toString();
+//                        pemateri = index.pemateri.toString();
+//                        lokasi = index.lokasi.toString();
+//                        cp = index.cp.toString();
+//                        mulei = index.mulai.toString();
+//                        smpei = index.sampai.toString();
+//                        switch (which) {
+//                            case 0:
+//                                if (!session.isLoggedIn()){
+//                                    Toast.makeText(context, "Maaf hanya admin yang bisa Edit", Toast.LENGTH_SHORT).show();
+//                                }else {
+//                                    name.equals("");
+//                                    Intent intent = new Intent(context, AdminInput.class);
+//                                    intent.putExtra("id_key", _id);
+//                                    intent.putExtra("type_key", type);
+//                                    intent.putExtra("tgl_key", tgl);
+//                                    intent.putExtra("day_key", day);
+//                                    intent.putExtra("pekan_key", pekan);
+//                                    intent.putExtra("mule_key", mulei);
+//                                    intent.putExtra("sampe_key", smpei);
+//                                    intent.putExtra("tema_key", tema);
+//                                    intent.putExtra("pemteri_key", pemateri);
+//                                    intent.putExtra("lokasi_key", lokasi);
+//                                    intent.putExtra("cp_key", cp);
+//                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                    context.startActivity(intent);
+//                                }
+//                                break;
+//                            case 1:
+//                                if (!session.isLoggedIn()){
+//                                    Toast.makeText(context, "Maaf hanya admin yang bisa Hapus", Toast.LENGTH_SHORT).show();
+//
+//                                }else {
+//                                    name.equals("");
+//                                    new AlertDialog.Builder(context)
+//                                            .setTitle("Delete Kajian")
+//                                            .setMessage("Are you sure want to delete this?")
+//                                            .setNegativeButton(android.R.string.no, null)
+//                                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                                                public void onClick(DialogInterface arg0, int arg1) {
+//                                                    deleteKajian(api.DEL_JADWAL + _id);
+//                                                    Intent intent = new Intent(context, AdminActivity.class);
+//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                                    context.startActivity(intent);
+//
+//                                                }
+//                                            }).create().show();
+//                                }
+//                                break;
+//                        }
+//                    }
+//                }).show();
+//                return false;
+//            }
+//        });
+//
+//        holder.rootViewPekan.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //mengirim data ke activity yg lain
+//                _id = index.id.toString();
+//                type = index.jenis_kajian.toString();
+//                tgl = index.tanggal.toString();
+//                day = index.setiap_hari.toString();
+//                pekan = index.pekan.toString();
+//                mulei = index.mulai.toString();
+//                smpei = index.sampai.toString();
+//                tema = index.tema.toString();
+//                pemateri = index.pemateri.toString();
+//                lokasi = index.lokasi.toString();
+//                cp = index.cp.toString();
+//                lat = index.lat.toString();
+//                lng = index.lng.toString();
+//                imgUri = index.foto_masjid.toString();
+
+//                date = getDayOnWeek(index.setiap_hari, Integer.parseInt(week));
+//
+//                Intent intent = new Intent(context, DetailKPekan.class);
+//                intent.putExtra("id_key", _id);
+//                intent.putExtra("type_key", type);
+//                intent.putExtra("tgl_key", tgl);
+//                intent.putExtra("tgl2_key", date);
+//                intent.putExtra("day_key", day);
+//                intent.putExtra("pekan_key", pekan);
+//                intent.putExtra("mule_key", mulei);
+//                intent.putExtra("sampe_key", smpei);
+//                intent.putExtra("tema_key", tema);
+//                intent.putExtra("pemteri_key", pemateri);
+//                intent.putExtra("lokasi_key", lokasi);
+//                intent.putExtra("cp_key", cp);
+//                intent.putExtra("lat_key", lat);
+//                intent.putExtra("lng_key", lng);
+//                intent.putExtra("img_key", imgUri);
+//                context.startActivity(intent);
+//            }
+//        });
+    }
+
+    public String getDayOnWeek(String dayNow,int week){
+        String reDate = "";
+        int from=0;
+        int until=0;
+        if(week==1){
+            from=1;
+            until=7;
+        }else if(week==2){
+            from=8;
+            until=14;
+        }else if(week==3){
+            from=15;
+            until=21;
+        }else if(week==4){
+            from=22;
+            until=28;
+        }else if(week==5){
+            from=29;
+            until=31;
+        }
+        for(int i=from;i<=until;i++){
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            int month = Calendar.getInstance().get(Calendar.MONTH);
+            Calendar calendar = new GregorianCalendar(year,month,i);
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            String day=getDayName(dayOfWeek);
+            if(dayNow.equals(day)){
+                reDate=sdf.format(calendar.getTime());
+                break;
             }
-        });
+        }
+        return reDate;
+    }
 
-        holder.rootViewPekan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String _id = index.id.toString();
-                String lat = index.lat.toString();
-                String lng = index.lng.toString();
-                String imgUri = index.foto_masjid.toString();
-                String tema = index.tema.toString();
-                String pemateri = index.pemateri.toString();
-                String lokasi = index.lokasi.toString();
-                String cp = index.cp.toString();
-                String mule = index.mulai.toString();
-                String smpai = index.sampai.toString();
-                String tggl = index.tanggal.toString();
-
-                Intent intent = new Intent(context, DetailKPekan.class);
-                intent.putExtra("id_key", _id);
-                intent.putExtra("lat_key", lat);
-                intent.putExtra("lng_key", lng);
-                intent.putExtra("mule_key", mule);
-                intent.putExtra("sampe_key", smpai);
-                intent.putExtra("tgl_key", tggl);
-                intent.putExtra("img_key", imgUri);
-                intent.putExtra("tema_key", tema);
-                intent.putExtra("pemteri_key", pemateri);
-                intent.putExtra("lokasi_key", lokasi);
-                intent.putExtra("cp_key", cp);
-
-                context.startActivity(intent);
-            }
-        });
+    public String getDayName(int dayOfWeek){
+        String day=null;
+        switch(dayOfWeek){
+            case 1:
+                day="Ahad";
+                break;
+            case 2:
+                day="Senin";
+                break;
+            case 3:
+                day="Selasa";
+                break;
+            case 4:
+                day="Rabu";
+                break;
+            case 5:
+                day="Kamis";
+                break;
+            case 6:
+                day="Jumat";
+                break;
+            case 7:
+                day="Sabtu";
+                break;
+        }
+        return day;
     }
 
     public void deleteKajian(String url){
@@ -246,7 +509,11 @@ public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
 
     @Override
     public int getItemCount() {
-        return listJadwal.size();
+        if (json_listkajian!=null){
+            return json_listkajian.length();
+        }else {
+            return 0;
+        }
     }
 
 }

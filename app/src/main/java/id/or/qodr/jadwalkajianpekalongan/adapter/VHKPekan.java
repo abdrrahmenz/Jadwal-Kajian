@@ -13,7 +13,7 @@ import id.or.qodr.jadwalkajianpekalongan.R;
 
 public class VHKPekan extends RecyclerView.ViewHolder {
 
-    public TextView id, tanggal,bulan,mulai, sampai, tema, pemateri, lokasi, cp;
+    public TextView mulai, sampai, tema, pemateri, lokasi, lat, lng, cp, id, type, tanggal, bulan;
     public View rootViewPekan;
     public ImageView img;
 
@@ -21,14 +21,17 @@ public class VHKPekan extends RecyclerView.ViewHolder {
         super(itemView);
         rootViewPekan = itemView;
 //        img = (ImageView) itemView.findViewById(R.id.img);
-        id = (TextView) itemView.findViewById(R.id._id);
-        tanggal = (TextView) itemView.findViewById(R.id.tanggal);
-        bulan = (TextView) itemView.findViewById(R.id.bulan);
-        mulai = (TextView) itemView.findViewById(R.id.mulaiPekan);
-        sampai = (TextView) itemView.findViewById(R.id.sampaiPekan);
-        tema = (TextView) itemView.findViewById(R.id.temaPekan);
-        pemateri = (TextView) itemView.findViewById(R.id.pemateriPekan);
-        lokasi = (TextView) itemView.findViewById(R.id.lokasiPekan);
-        cp = (TextView) itemView.findViewById(R.id.cpPekan);
+        id = (TextView) rootViewPekan.findViewById(R.id._id);
+        type = (TextView) rootViewPekan.findViewById(R.id.jniskjian);
+        tanggal = (TextView) rootViewPekan.findViewById(R.id.tanggal);
+        bulan = (TextView) rootViewPekan.findViewById(R.id.bulan);
+        mulai = (TextView) rootViewPekan.findViewById(R.id.mulaiPekan);
+        sampai = (TextView) rootViewPekan.findViewById(R.id.sampaiPekan);
+        tema = (TextView) rootViewPekan.findViewById(R.id.temaPekan);
+        pemateri = (TextView) rootViewPekan.findViewById(R.id.pemateriPekan);
+        lokasi = (TextView) rootViewPekan.findViewById(R.id.lokasiPekan);
+        lat = (TextView) rootViewPekan.findViewById(R.id.lat);
+        lng = (TextView) rootViewPekan.findViewById(R.id.lng);
+        cp = (TextView) rootViewPekan.findViewById(R.id.cpPekan);
     }
 }

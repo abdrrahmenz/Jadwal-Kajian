@@ -5,14 +5,41 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_input_kajian"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:textSize="21sp"
+                android:fontFamily="sans-serif-condensed"
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title" />
+
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/activity_admin_input"
+        android:layout_below="@id/appbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -39,7 +66,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:textSize="18sp"
                         android:textColor="#000"
                         android:text="Jenis Kajian : "/>
@@ -49,6 +76,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.5">
+                    <RadioGroup
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/radioGroup"
+                        android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/rutin"
@@ -60,7 +92,7 @@
                         android:gravity="center"
                         android:onClick="onClick"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"/>
+                        android:layout_marginBottom="5dp"/>
 
                     <RadioButton
                         android:id="@+id/tdkRutin"
@@ -72,34 +104,72 @@
                         android:gravity="center"
                         android:onClick="onClick"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="10dp"/>
+                    </RadioGroup>
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/opt_rutin"
-                android:background="@drawable/rounded_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginBottom="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.8">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Setiap Hari : "
+                        android:text="Setiap "
+                        android:layout_width="90dp"
+                        android:layout_height="45dp"
+                        android:gravity="center"
                         android:textSize="18sp"
-                        android:textColor="#000"
-                        android:layout_margin="10dp"/>
+                        android:textColor="#000"/>
+
+                    <TextView
+                        android:text="Pekan "
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:paddingTop="6dp"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="#000"/>
+                    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="0.10"
+                    android:layout_marginLeft="13dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text=":"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="#000"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:text=":"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="#000"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="8dp">
+
                     <Spinner
                         android:id="@+id/spin_stiaphari"
                         android:layout_width="150dp"
@@ -107,89 +177,23 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="14dp"
                         android:layout_marginBottom="3dp"
+                        android:paddingLeft="14dip"
+                        android:paddingRight="8dip"
                         android:background="@drawable/rounded_style"/>
-                </LinearLayout>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="1">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="18sp"
-                        android:text="Pekan Ke : "
-                        android:layout_margin="10sp"
-                        android:textColor="#000"/>
-                    <LinearLayout
-                        android:id="@+id/openDialog"
-                        android:layout_width="wrap_content"
-                        android:layout_height="47dp">
-
-                        <TextView
-                            android:id="@+id/text"
-                            android:layout_width="150dp"
-                            android:layout_height="40dp"
-                            android:layout_marginBottom="13dp"
-                            android:layout_marginLeft="27dp"
-                            android:singleLine="true"
-                            android:textColor="#000"
-                            android:gravity="center"
-                            android:textSize="14sp"
-                            android:background="@drawable/rounded_style"
-                            android:text="Pilih Pekan" />
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanSatu"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="1"/>-->
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanDua"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="2"/>-->
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanTiga"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="3"/>-->
-                    </LinearLayout>
-                    <!--<LinearLayout-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="vertical">-->
-
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanEmpat"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="4"/>-->
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanLima"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="5"/>-->
-                        <!--<android.support.v7.widget.AppCompatCheckBox-->
-                            <!--android:id="@+id/pekanAll"-->
-                            <!--android:layout_width="wrap_content"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:layout_margin="5sp"-->
-                            <!--android:onClick="onCheckBox"-->
-                            <!--android:text="Semua"/>-->
-                    <!--</LinearLayout>-->
+                    <Button
+                        android:id="@+id/btn_pekan"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="14dp"
+                        android:paddingLeft="14dip"
+                        android:paddingRight="14dip"
+                        android:textAllCaps="false"
+                        android:gravity="center"
+                        android:onClick="onClick"
+                        android:background="@drawable/rounded_style"
+                        android:text="Pilih Pekan" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -198,29 +202,63 @@
             android:id="@+id/tgl_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp">
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tanggal : "
-                android:textSize="18sp"
-                android:layout_marginLeft="10sp"
-                android:textColor="#000"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.8">
 
-            <Button
-                android:id="@+id/tgl_input"
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="33sp"
-                android:textAllCaps="false"
-                android:onClick="onClick"
-                android:background="@drawable/rounded_style"
-                android:drawableLeft="@drawable/ic_tnggal"
-                android:drawablePadding="2dip"
-                android:paddingLeft="14dip"
-                android:paddingRight="14dip"
-                android:text="Date-Month-Year"/>
+                <TextView
+                    android:text="Tanggal"
+                    android:layout_marginLeft="10sp"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#000"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.10"
+                android:layout_marginLeft="13dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text=":"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="#000"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:layout_marginLeft="8dp">
+
+                <Button
+                    android:id="@+id/tgl_input"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3sp"
+                    android:textAllCaps="false"
+                    android:onClick="onClick"
+                    android:background="@drawable/rounded_style"
+                    android:drawableLeft="@drawable/ic_tnggal"
+                    android:drawablePadding="2dip"
+                    android:paddingLeft="14dip"
+                    android:paddingRight="14dip"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="2dp"
+                    android:text="Date-Month-Year"/>
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </LinearLayout>
@@ -237,13 +275,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:layout_margin="4dp">
 
         <TextView
             android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:text="Mulai : "
+            android:layout_height="45dp"
+            android:text="Mulai "
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#000"/>
@@ -252,8 +290,9 @@
             android:id="@+id/txsmpai"
             android:layout_width="80dp"
             android:layout_height="53dp"
+            android:layout_marginLeft="6dp"
             android:gravity="center"
-            android:text="Sampai : "
+            android:text="Sampai "
             android:textSize="18sp"
             android:textColor="#000"/>
 
@@ -263,14 +302,16 @@
             android:layout_height="43dp"
             android:gravity="center"
             android:layout_below="@id/txsmpai"
-            android:text="Ustadz : "
+            android:layout_marginLeft="6dp"
+            android:text="Ustadz "
             android:textSize="18sp"
             android:textColor="#000"/>
 
         <TextView
             android:layout_width="80dp"
             android:layout_height="43dp"
-            android:text="Tema : "
+            android:paddingTop="10dp"
+            android:text="Tema "
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#000"/>
@@ -278,7 +319,9 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="45dp"
-            android:text="Tempat : "
+            android:paddingTop="13dp"
+            android:text="Tempat "
+            android:layout_marginLeft="8sp"
             android:gravity="center"
             android:textSize="18sp"
             android:textColor="#000"/>
@@ -286,11 +329,67 @@
         <TextView
             android:layout_width="80dp"
             android:layout_height="44dp"
-            android:text="No Hp : "
+            android:text="No Hp "
             android:gravity="center"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="6sp"
             android:textSize="18sp"
             android:textColor="#000"/>
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.15">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text=":"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:textColor="#000"/>
+        </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
@@ -332,9 +431,10 @@
             android:id="@+id/edt_pemateri"
             android:layout_width="180dp"
             android:layout_height="40dp"
-            android:hint="ust Subhan Lc"
+            android:hint="Ust Basamalah Lc"
             android:textSize="14sp"
-            android:inputType="textPersonName"
+            android:inputType="textCapWords"
+            android:gravity="center"
             android:drawablePadding="2dip"
             android:layout_marginBottom="4dp"
             android:paddingLeft="14dip"
@@ -348,7 +448,8 @@
             android:layout_height="40dp"
             android:hint="Minhajul Muslim"
             android:drawablePadding="2dip"
-            android:inputType="textMultiLine"
+            android:inputType="textCapWords"
+            android:gravity="center"
             android:textSize="14sp"
             android:paddingLeft="14dip"
             android:paddingRight="14dip"
@@ -363,6 +464,8 @@
             android:background="@drawable/rounded_style"
             android:layout_marginLeft="9sp"
             android:layout_marginBottom="4dp"
+            android:paddingLeft="14dip"
+            android:paddingRight="14dip"
             android:hint="Pilih Lokasi"
             android:textColorHint="#000"/>
 
@@ -374,7 +477,8 @@
             android:drawablePadding="2dip"
             android:singleLine="true"
             android:textSize="14sp"
-            android:inputType="number"
+            android:inputType="phone"
+            android:gravity="center"
             android:paddingLeft="14dip"
             android:paddingRight="14dip"
             android:background="@drawable/rounded_style"

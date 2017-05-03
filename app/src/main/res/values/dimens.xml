@@ -5,4 +5,6 @@
     <dimen name="card_margin">3dp</dimen>
     <dimen name="card_album_radius">2dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="medium_space_between_views">16dp</dimen>
+    <dimen name="minimum_space_between_views">12dp</dimen>
 </resources>

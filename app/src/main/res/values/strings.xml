@@ -35,4 +35,8 @@
         Website: %5$s
     ]]>
 </string>
+    <string name="version_apps">versi 1.0</string>
+    <string name="change_pass">Change Password</string>
+    <string name="profile">Profile Admin</string>
+    <string name="push_notif">Push Notif</string>
 </resources>

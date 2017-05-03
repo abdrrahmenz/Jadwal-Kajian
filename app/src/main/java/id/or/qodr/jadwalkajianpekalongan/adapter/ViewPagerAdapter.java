@@ -3,6 +3,7 @@ package id.or.qodr.jadwalkajianpekalongan.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final List<Fragment> kajianHariniList = new ArrayList<>();
+    private final List<Fragment> kajianList = new ArrayList<>();
     private final List<String> titleKajianList = new ArrayList<>();
 
     public ViewPagerAdapter(FragmentManager fm) {
@@ -22,16 +23,16 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return kajianHariniList.get(position);
+        return kajianList.get(position);
     }
 
     @Override
     public int getCount() {
-        return kajianHariniList.size();
+        return kajianList.size();
     }
 
     public void addFragment(Fragment fragment, String title) {
-        kajianHariniList.add(fragment);
+        kajianList.add(fragment);
         titleKajianList.add(title);
     }
 
