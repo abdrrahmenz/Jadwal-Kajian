@@ -101,7 +101,6 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         ShortcutBadger.removeCount(this);
-//        Toast.makeText(this, "Clear badge", Toast.LENGTH_SHORT).show();
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -147,5 +146,4 @@ public class DashboardActivity extends AppCompatActivity {
             Toast.makeText(this, "Internet is off.", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

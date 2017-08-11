@@ -37,7 +37,6 @@ public class Login extends BaseActivity {
     private TextInputEditText input_user, input_pass;
     private Button login;
     private SessionManager session;
-    private View view;
     // temporary string to show the parsed response
     private String jsonUsername,jsonFullname,jsonId;
     private String edt_pasword;
@@ -49,7 +48,6 @@ public class Login extends BaseActivity {
         getWindow().getAttributes().windowAnimations = R.style.Fade;
         // Session Manager
         session = new SessionManager(getApplicationContext());
-        view = new View(this);
 
         input_user = (TextInputEditText) findViewById(R.id.input_email);
         input_pass = (TextInputEditText) findViewById(R.id.input_password);

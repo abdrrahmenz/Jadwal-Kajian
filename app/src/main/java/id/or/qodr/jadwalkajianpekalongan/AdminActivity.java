@@ -91,10 +91,10 @@ public class AdminActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent input = new Intent(AdminActivity.this, AdminInput.class);
+//                Intent input = new Intent(AdminActivity.this, AdminInput.class);
 //                overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
-                startActivity(input);
-                finish();
+//                startActivity(input);
+//                finish();
             }
         });
     }

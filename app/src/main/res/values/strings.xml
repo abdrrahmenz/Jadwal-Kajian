@@ -39,4 +39,5 @@
     <string name="change_pass">Change Password</string>
     <string name="profile">Profile Admin</string>
     <string name="push_notif">Push Notif</string>
+    <string name="need_location_permission_message">You need to enable location permissions first</string>
 </resources>

@@ -4,45 +4,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_input_kajian"
-                android:textStyle="bold"
-                android:textColor="#fff"
-                android:textSize="21sp"
-                android:fontFamily="sans-serif-condensed"
-                android:layout_gravity="center"
-                android:id="@+id/toolbar_title" />
-
-        </android.support.v7.widget.Toolbar>
-    </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_admin_input"
-        android:layout_below="@id/appbar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_input_kajian"
+                    android:textStyle="bold"
+                    android:textColor="#fff"
+                    android:textSize="21sp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:layout_gravity="center"
+                    android:id="@+id/toolbar_title" />
+
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
 
         <TextView
             android:id="@+id/_id"
@@ -51,469 +44,295 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:textSize="18sp"
-                        android:textColor="#000"
-                        android:text="Jenis Kajian : "/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5">
-                    <RadioGroup
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/radioGroup"
-                        android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rutin"
-                        android:button="@null"
-                        android:layout_width="90dp"
-                        android:layout_height="40dp"
-                        android:text="Rutin"
-                        android:background="@drawable/rounded_style"
-                        android:gravity="center"
-                        android:onClick="onClick"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"/>
-
-                    <RadioButton
-                        android:id="@+id/tdkRutin"
-                        android:button="@null"
-                        android:layout_width="90dp"
-                        android:layout_height="40dp"
-                        android:text="Tidak Rutin"
-                        android:background="@drawable/rounded_style"
-                        android:gravity="center"
-                        android:onClick="onClick"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"/>
-                    </RadioGroup>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/opt_rutin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="0.8">
-
-                    <TextView
-                        android:text="Setiap "
-                        android:layout_width="90dp"
-                        android:layout_height="45dp"
-                        android:gravity="center"
-                        android:textSize="18sp"
-                        android:textColor="#000"/>
-
-                    <TextView
-                        android:text="Pekan "
-                        android:layout_width="90dp"
-                        android:layout_height="40dp"
-                        android:paddingTop="6dp"
-                        android:gravity="center"
-                        android:textSize="18sp"
-                        android:textColor="#000"/>
-                    </LinearLayout>
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="0.10"
-                    android:layout_marginLeft="13dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text=":"
-                        android:gravity="center"
-                        android:textSize="18sp"
-                        android:textColor="#000"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:text=":"
-                        android:gravity="center"
-                        android:textSize="18sp"
-                        android:textColor="#000"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_weight="2"
-                    android:layout_marginLeft="8dp">
-
-                    <Spinner
-                        android:id="@+id/spin_stiaphari"
-                        android:layout_width="150dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="14dp"
-                        android:layout_marginBottom="3dp"
-                        android:paddingLeft="14dip"
-                        android:paddingRight="8dip"
-                        android:background="@drawable/rounded_style"/>
-
-                    <Button
-                        android:id="@+id/btn_pekan"
-                        android:layout_width="150dp"
-                        android:layout_height="40dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginLeft="14dp"
-                        android:paddingLeft="14dip"
-                        android:paddingRight="14dip"
-                        android:textAllCaps="false"
-                        android:gravity="center"
-                        android:onClick="onClick"
-                        android:background="@drawable/rounded_style"
-                        android:text="Pilih Pekan" />
-                </LinearLayout>
-
-            </LinearLayout>
-
         <LinearLayout
-            android:id="@+id/tgl_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_below="@id/appbar"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="0.8">
-
-                <TextView
-                    android:text="Tanggal"
-                    android:layout_marginLeft="10sp"
-                    android:layout_width="80dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="#000"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="0.10"
-                android:layout_marginLeft="13dp">
-
-                <TextView
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:text=":"
-                    android:gravity="center"
-                    android:textSize="18sp"
-                    android:textColor="#000"/>
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:textSize="18sp"
+                            android:textColor="#000"
+                            android:textStyle="bold"
+                            android:fontFamily="sans-serif-condensed"
+                            android:text="Jenis Kajian "/>
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/black"
+                            />
+                        <RadioGroup
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/radioGroup"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rutin"
+                                android:button="@null"
+                                android:layout_width="90dp"
+                                android:layout_height="40dp"
+                                android:text="Rutin"
+                                android:background="@drawable/rounded_style"
+                                android:gravity="center"
+                                android:layout_marginLeft="-20dp"
+                                android:onClick="onClick"/>
+
+                            <RadioButton
+                                android:id="@+id/tdkRutin"
+                                android:button="@null"
+                                android:layout_width="90dp"
+                                android:layout_height="40dp"
+                                android:text="Tidak Rutin"
+                                android:background="@drawable/rounded_style"
+                                android:gravity="center"
+                                android:onClick="onClick"
+                                android:layout_marginLeft="10dp"/>
+                        </RadioGroup>
+                    </LinearLayout>
+                    <View
+                        android:id="@+id/view_opt_rutin"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/black"/>
+
+                    <LinearLayout
+                        android:id="@+id/opt_rutin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_margin="10dp">
+
+                        <Spinner
+                            android:id="@+id/spin_stiaphari"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="5dp"
+                            android:paddingLeft="14dip"
+                            android:paddingRight="8dip"
+                            android:background="@drawable/rounded_style"/>
+
+                        <Button
+                            android:id="@+id/btn_pekan"
+                            android:layout_width="150dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="14dp"
+                            android:paddingLeft="14dip"
+                            android:paddingRight="14dip"
+                            android:textAllCaps="false"
+                            android:gravity="center"
+                            android:onClick="onClick"
+                            android:background="@drawable/rounded_style"
+                            android:text="Pilih Pekan" />
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/black"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp">
+
+                        <ImageView
+                            android:id="@+id/image_masjid"
+                            android:src="@drawable/ic_photo_black_24dp"
+                            android:onClick="onClick"
+                            android:padding="10dp"
+                            android:layout_width="90dp"
+                            android:layout_height="100dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                        </LinearLayout>
+                        <Button
+                            android:id="@+id/tgl_input"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/image_masjid"
+                            android:textAllCaps="false"
+                            android:onClick="onClick"
+                            android:background="@drawable/rounded_style"
+                            android:drawableLeft="@drawable/ic_tnggal"
+                            android:paddingLeft="14dip"
+                            android:paddingRight="14dip"
+                            android:text="Date"/>
+
+                        <Button
+                            android:id="@+id/time_mulai"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_toRightOf="@id/tgl_input"
+                            android:layout_centerHorizontal="true"
+                            android:textAllCaps="false"
+                            android:background="@drawable/rounded_style"
+                            android:drawableLeft="@drawable/ic_time"
+                            android:onClick="onClick"
+                            android:paddingLeft="10dip"
+                            android:paddingRight="14dip"
+                            android:text="From"/>
+
+                        <Button
+                            android:id="@+id/time_sampai"
+                            android:layout_width="85dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_alignParentEnd="true"
+                            android:textAllCaps="false"
+                            android:background="@drawable/rounded_style"
+                            android:drawableLeft="@drawable/ic_time"
+                            android:onClick="onClick"
+                            android:paddingLeft="8dip"
+                            android:paddingRight="14dip"
+                            android:text="To"/>
+
+                        <Button
+                            android:id="@+id/place"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tgl_input"
+                            android:layout_toRightOf="@id/image_masjid"
+                            android:layout_marginTop="5dp"
+                            android:textAllCaps="false"
+                            android:background="@drawable/rounded_style"
+                            android:drawableLeft="@drawable/ic_place"
+                            android:drawablePadding="2dip"
+                            android:onClick="onAddPlaceButtonClicked"
+                            android:paddingLeft="14dip"
+                            android:paddingRight="14dip"
+                            android:text="Place"/>
+
+                        <TextView
+                            android:id="@+id/place_address"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PlaceAdress"/>
+                        <TextView
+                            android:id="@+id/place_lat"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Placelat"/>
+                        <TextView
+                            android:id="@+id/place_lng"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PlaceLng"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/black"/>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/edt_pemateri"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Ustadz Pemateri"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/edt_tema"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Tema Kajian"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp">
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/edt_cp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nomer Cp"
+                            android:inputType="phone"
+                            android:singleLine="true"/>
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="2"
-                android:layout_marginLeft="8dp">
+                android:id="@+id/layout_buton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
 
                 <Button
-                    android:id="@+id/tgl_input"
-                    android:layout_width="180dp"
+                    android:id="@+id/btn_cancel"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3sp"
-                    android:textAllCaps="false"
+                    android:background="@drawable/btn_signin"
+                    android:text="Cancel"
                     android:onClick="onClick"
-                    android:background="@drawable/rounded_style"
-                    android:drawableLeft="@drawable/ic_tnggal"
-                    android:drawablePadding="2dip"
-                    android:paddingLeft="14dip"
-                    android:paddingRight="14dip"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginTop="2dp"
-                    android:text="Date-Month-Year"/>
+                    android:textColor="@color/white"
+                    android:layout_margin="5dp"
+                    android:textAllCaps="false"/>
+
+                <Button
+                    android:id="@+id/btn_addkajian"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Tambah Kajian"
+                    android:onClick="onClick"
+                    android:textColor="@color/white"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/btn_signin"
+                    android:textAllCaps="false"/>
             </LinearLayout>
-
-
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/input2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/activity_admin_input"
-        android:layout_alignParentStart="true">
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="0.8"
-        android:layout_margin="4dp">
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="45dp"
-            android:text="Mulai "
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="#000"/>
-
-        <TextView
-            android:id="@+id/txsmpai"
-            android:layout_width="80dp"
-            android:layout_height="53dp"
-            android:layout_marginLeft="6dp"
-            android:gravity="center"
-            android:text="Sampai "
-            android:textSize="18sp"
-            android:textColor="#000"/>
-
-        <TextView
-            android:id="@+id/txpmteri"
-            android:layout_width="80dp"
-            android:layout_height="43dp"
-            android:gravity="center"
-            android:layout_below="@id/txsmpai"
-            android:layout_marginLeft="6dp"
-            android:text="Ustadz "
-            android:textSize="18sp"
-            android:textColor="#000"/>
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="43dp"
-            android:paddingTop="10dp"
-            android:text="Tema "
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="#000"/>
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="45dp"
-            android:paddingTop="13dp"
-            android:text="Tempat "
-            android:layout_marginLeft="8sp"
-            android:gravity="center"
-            android:textSize="18sp"
-            android:textColor="#000"/>
-
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="44dp"
-            android:text="No Hp "
-            android:gravity="center"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="6sp"
-            android:textSize="18sp"
-            android:textColor="#000"/>
-    </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.15">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:text=":"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textColor="#000"/>
-        </LinearLayout>
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="2">
-
-        <Button
-            android:id="@+id/time_mulai"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="9sp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:textAllCaps="false"
-            android:background="@drawable/rounded_style"
-            android:drawableLeft="@drawable/ic_time"
-            android:drawablePadding="2dip"
-            android:onClick="onClick"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:text="Hours-Minutes"/>
-
-        <Button
-            android:id="@+id/time_sampai"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="9sp"
-            android:layout_marginBottom="4dp"
-            android:textAllCaps="false"
-            android:background="@drawable/rounded_style"
-            android:drawableLeft="@drawable/ic_time"
-            android:drawablePadding="2dip"
-            android:onClick="onClick"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:text="Hours-Minutes"/>
-
-        <EditText
-            android:id="@+id/edt_pemateri"
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:hint="Ust Basamalah Lc"
-            android:textSize="14sp"
-            android:inputType="textCapWords"
-            android:gravity="center"
-            android:drawablePadding="2dip"
-            android:layout_marginBottom="4dp"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:background="@drawable/rounded_style"
-            android:layout_marginStart="9dp" />
-
-        <EditText
-            android:id="@+id/edt_tema"
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:hint="Minhajul Muslim"
-            android:drawablePadding="2dip"
-            android:inputType="textCapWords"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:layout_marginBottom="4dp"
-            android:background="@drawable/rounded_style"
-            android:layout_marginLeft="9dp"/>
-
-        <Spinner
-            android:id="@+id/lokasi_input"
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:background="@drawable/rounded_style"
-            android:layout_marginLeft="9sp"
-            android:layout_marginBottom="4dp"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:hint="Pilih Lokasi"
-            android:textColorHint="#000"/>
-
-        <EditText
-            android:id="@+id/edt_cp"
-            android:layout_width="180dp"
-            android:layout_height="40dp"
-            android:hint="+6289633xxx"
-            android:drawablePadding="2dip"
-            android:singleLine="true"
-            android:textSize="14sp"
-            android:inputType="phone"
-            android:gravity="center"
-            android:paddingLeft="14dip"
-            android:paddingRight="14dip"
-            android:background="@drawable/rounded_style"
-            android:layout_marginLeft="9dp"/>
-    </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/input2">
-
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/btn_signin"
-            android:text="Cancel"
-            android:onClick="onClick"
-            android:textColor="@color/white"
-            android:layout_margin="5dp"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btn_addkajian"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Tambah Kajian"
-            android:onClick="onClick"
-            android:textColor="@color/white"
-            android:layout_margin="5dp"
-            android:background="@drawable/btn_signin"
-            android:textAllCaps="false"/>
-    </LinearLayout>
-</RelativeLayout>
+    </RelativeLayout>
 </ScrollView>

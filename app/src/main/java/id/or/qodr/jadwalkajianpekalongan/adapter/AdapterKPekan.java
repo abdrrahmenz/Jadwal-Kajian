@@ -47,12 +47,12 @@ import id.or.qodr.jadwalkajianpekalongan.model.JadwalModel;
 
 public class AdapterKPekan extends RecyclerView.Adapter<VHKPekan> {
 
-    private Context context;
     private List<JadwalModel> listJadwal;
+    private Context context;
     private Utils utils;
     private SessionManager session;
+    private JSONArray json_listkajian;
     private API api;
-    JSONArray json_listkajian;
 
     private AdapterKPekan adpter;
     private String date, _id, type, tgl, pekan, day, lat, lng, imgUri, tema, pemateri, lokasi, cp, mulei,smpei;

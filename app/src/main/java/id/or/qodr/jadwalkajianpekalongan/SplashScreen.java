@@ -17,7 +17,7 @@ public class SplashScreen extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 3000;
     private SessionManager session;
     public static OkHttpClient okHttpClient;
-    public static final String BASE_URL = "http://api.bbenkpartnersolo.com/";
+    public static final String BASE_URL = "https://adul.000webhostapp.com/apiv2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

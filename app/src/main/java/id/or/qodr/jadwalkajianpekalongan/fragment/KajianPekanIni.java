@@ -44,13 +44,13 @@ import okhttp3.Response;
  */
 public class KajianPekanIni extends Fragment {
 
-    private RecyclerView rvKajian;
     private DataKajian dataKajian;
     private API api;
     private List<JadwalModel> jadwal;
-    private SwipeRefreshLayout swipeRefresh;
     private String start;
     private String ends;
+    private RecyclerView rvKajian;
+    private SwipeRefreshLayout swipeRefresh;
     View rootView;
     OkHttpClient okHttpClient;
     AdapterKPekan adapterListPekan;

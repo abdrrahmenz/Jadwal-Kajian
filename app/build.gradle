@@ -36,9 +36,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.android.gms:play-services-places:10.2.1'
+    compile 'com.google.android.gms:play-services-location:10.2.1'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     //  OkHttp 3
-    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile "me.leolin:ShortcutBadger:1.1.16@aar"
     // Firebase Push Notif

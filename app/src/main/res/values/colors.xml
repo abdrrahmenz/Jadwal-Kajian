@@ -9,6 +9,7 @@
 
     <color name="colorPrimaryBar">#8b8b8b</color>
     <color name="white">#FFF</color>
+    <color name="alert">#8ced0808</color>
     <color name="black">#000</color>
     <color name="yellow">#f7ff00</color>
 

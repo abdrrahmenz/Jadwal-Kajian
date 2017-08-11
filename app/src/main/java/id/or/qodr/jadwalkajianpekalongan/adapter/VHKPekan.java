@@ -19,8 +19,8 @@ public class VHKPekan extends RecyclerView.ViewHolder {
 
     public VHKPekan(View itemView) {
         super(itemView);
-        rootViewPekan = itemView;
 //        img = (ImageView) itemView.findViewById(R.id.img);
+        rootViewPekan = itemView;
         id = (TextView) rootViewPekan.findViewById(R.id._id);
         type = (TextView) rootViewPekan.findViewById(R.id.jniskjian);
         tanggal = (TextView) rootViewPekan.findViewById(R.id.tanggal);
